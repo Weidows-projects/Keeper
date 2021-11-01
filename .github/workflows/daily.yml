@@ -1,0 +1,97 @@
+name: DailyTask
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  # 东八区每天八点多运行
+  schedule:
+    - cron: "0 0 * * *"
+  # 标星时运行
+  watch:
+    types: [started]
+
+jobs:
+  autogreen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+        with:
+          # 这里必须是0, gitee 不允许 shallow push
+          fetch-depth: 0
+
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.9.0
+
+      - name: My-Tasks
+        run: |
+          # 设置Git
+          if [ a${{ secrets.PUSH_EMAIL }} != a ]; then
+            git config --local user.name ${{ github.actor }}
+            git config --local user.email ${{ secrets.PUSH_EMAIL }}
+          else
+            git config --local user.name "github-actions[bot]"
+            git config --local user.email "github-actions@github.com"
+          fi
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+          # 获取必应壁纸
+          cd ./Bing && php index.php && cd ..
+
+          # 记录log
+          date +"%Y-%m-%d %H:%M:%S.%N" >> Tasks.log
+
+          # 推送
+          git add .
+          git commit -am "A commit a day keeps girlfriend away."
+          git push origin main
+
+          # gitee-ssh
+          if [ a${{ secrets.GITEE_RSA }} != a ]; then
+            mkdir ~/.ssh
+            echo 'StrictHostKeyChecking no
+            # gitee
+            Host gitee.com
+            HostName gitee.com
+            PreferredAuthentications publickey
+            IdentityFile ~/.ssh/Gitee_rsa' > ~/.ssh/config
+
+            echo "${{ secrets.GITEE_RSA }}" > ~/.ssh/Gitee_GITEE_RSA
+            chmod 600 ~/.ssh/*
+            ssh -T git@gitee.com
+            git remote add Gitee git@gitee.com:${{ github.repository }}.git
+            git push Gitee main -f
+          fi
+
+  weakup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: My-Tasks
+        run: |
+          # 唤醒LeanCloud评论管理系统
+          curl ${{ secrets.URL }}
+
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror org
+        uses: Yikun/hub-mirror-action@master
+        with:
+          src: github/Weidows-projects
+          dst: gitee/weidows-projects
+          dst_key: ${{ secrets.GITEE_RSA }}
+          dst_token: ${{ secrets.GITEE_TOKEN }}
+          account_type: org
+
+      # - name: Mirror personal
+      #   uses: Yikun/hub-mirror-action@master
+      #   with:
+      #     src: github/Weidows
+      #     dst: gitee/Weidows
+      #     dst_key: ${{ secrets.GITEE_RSA }}
+      #     dst_token: ${{ secrets.GITEE_TOKEN }}
+      #     white_list: ""
+      #     black_list:
+      #     static_list:
+      #     force_update: true
