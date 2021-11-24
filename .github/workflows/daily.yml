@@ -20,6 +20,7 @@ jobs:
         with:
           # 这里必须是0, gitee 不允许 shallow push
           fetch-depth: 0
+          ref: tasks
 
       - name: Setup PHP Action
         uses: shivammathur/setup-php@2.9.0
@@ -27,7 +28,7 @@ jobs:
       - name: My-Tasks
         run: |
           # 设置Git
-          if [ a${{ secrets.PUSH_EMAIL }} != a ]; then
+          if [ 'a${{ secrets.PUSH_EMAIL }}' != 'a' ]; then
             git config --local user.name ${{ github.actor }}
             git config --local user.email ${{ secrets.PUSH_EMAIL }}
           else
@@ -45,10 +46,10 @@ jobs:
           # 推送
           git add .
           git commit -am "A commit a day keeps girlfriend away."
-          git push origin main
+          git push origin tasks
 
           # gitee-ssh
-          if [ a${{ secrets.GITEE_RSA }} != a ]; then
+          if [ 'a${{ secrets.GITEE_RSA }}' != 'a' ]; then
             mkdir ~/.ssh
             echo 'StrictHostKeyChecking no
             # gitee
@@ -57,11 +58,11 @@ jobs:
             PreferredAuthentications publickey
             IdentityFile ~/.ssh/Gitee_rsa' > ~/.ssh/config
 
-            echo "${{ secrets.GITEE_RSA }}" > ~/.ssh/Gitee_GITEE_RSA
+            echo '${{ secrets.GITEE_RSA }}' > ~/.ssh/Gitee_rsa
             chmod 600 ~/.ssh/*
             ssh -T git@gitee.com
             git remote add Gitee git@gitee.com:${{ github.repository }}.git
-            git push Gitee main -f
+            git push Gitee tasks -f
           fi
 
   weakup:
@@ -83,6 +84,7 @@ jobs:
           dst_key: ${{ secrets.GITEE_RSA }}
           dst_token: ${{ secrets.GITEE_TOKEN }}
           account_type: org
+          force_update: true
 
       # - name: Mirror personal
       #   uses: Yikun/hub-mirror-action@master
@@ -95,3 +97,32 @@ jobs:
       #     black_list:
       #     static_list:
       #     force_update: true
+
+  daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dailycheckin
+        run: |
+          if [ 'a${{ secrets.DAILY_CHECKIN_CONFIG }}' != 'a' ]; then
+            pip install dailycheckin
+
+            echo '${{ secrets.DAILY_CHECKIN_CONFIG }}' > config.json
+
+            # 已启用但报错: CSDN IQIYI
+            dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
+
+            # 事了拂衣去
+            rm config.json
+          fi
+
+      - name: AutoMihoyoBBS
+        run: |
+          if [ 'a${{ secrets.AUTOMIHOYOBBS_CONFIG }}' != 'a' ]; then
+            git clone https://github.com/Womsxd/AutoMihoyoBBS.git
+            cd AutoMihoyoBBS
+
+            pip install -r ./requirements.txt
+            echo '${{ secrets.AUTOMIHOYOBBS_CONFIG }}' > config/config.json
+
+            python main.py >/dev/null
+          fi
