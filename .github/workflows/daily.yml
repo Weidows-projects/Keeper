@@ -21,6 +21,7 @@ jobs:
           # 这里必须是0, gitee 不允许 shallow push
           fetch-depth: 0
           ref: tasks
+          persist-credentials: false
 
       - name: Setup PHP Action
         uses: shivammathur/setup-php@2.9.0

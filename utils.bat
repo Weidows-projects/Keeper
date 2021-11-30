@@ -97,10 +97,15 @@ goto :eof
 
     call xrepo scan > cpp\xrepo-scan.bak
 
-    dir /b D:\Musics\Local > dir\dir-music.bak
-    dir /b E:\mystream > dir\dir-mystream.bak
-    dir /b D:\Software > dir\dir-software.bak
     dir /b %HOME%\.vscode\extensions > dir\dir-.vscode.bak
+    dir /b D:\Musics\Local > dir\dir-music.bak
+    dir /b D:\Software > dir\dir-software.bak
+
+    dir /b E:\mystream > game\dir-mystream.bak
+    xcopy %SCOOP%\apps\steam\current\steamapps\libraryfolders.vdf game\ /y/d
+    @REM 重装系统/wallpaper engine,所有壁纸会木大,所以备份
+    xcopy %SCOOP%\persist\steam\steamapps\workshop\*.acf game\ /y/d
+    xcopy E:\mystream\steamapps\workshop\*.acf game\ /y/d
 
     call gh repo list > github\repolist-Weidows.bak
     call gh repo list Weidows-projects > github\repolist-Weidows-projects.bak
@@ -122,9 +127,6 @@ goto :eof
     )
     cd /d %currentPath%
     call choco list -l > scoop\choco-list-local.bak
-
-    @REM 重装系统/重装wallpaper engine,所有壁纸会木大,所以备份
-    xcopy %SCOOP%\persist\steam\steamapps\common\wallpaper_engine\config.json .\wallpaper_engine\ /y/d
 
     cd ..
 

@@ -2,7 +2,7 @@
  * @Author: Weidows
  * @Date: 2020-11-28 17:36:36
  * @LastEditors: Weidows
- * @LastEditTime: 2021-11-24 15:13:05
+ * @LastEditTime: 2021-11-30 18:17:13
  * @FilePath: \Keeper\README.md
  * @Description:
 -->
@@ -19,7 +19,7 @@
 
 - [x] daily-push `刷绿 profile 格子` (Fork 项目不被计数刷绿; 主旨非作弊行为
 - [x] 访问唤醒休眠的 LeanCloud 评论后台 (也可以是其他地址
-- [x] 获取`必应壁纸`,存储在[Bing](./Bing/)里面.
+- [x] 获取`必应壁纸`,存储在 tasks 分支的 Bing 里面.
 - [x] 同步 github 仓库到 gitee.
 - [x] 调用 dailycheckin / automihoyobbs 定时任务
 
@@ -40,7 +40,7 @@
 
 - 全堆在 [utils.bat](./utils.bat) 里,注释很明确; 下图为样式
 
-  <img src="https://i.loli.net/2021/11/01/hnvBmlG6ZWoLru1.png" alt="20211101212936" />
+  <img src="https://i.loli.net/2021/11/30/dwC5itDyuMkjhWL.png" alt="20211130180628" />
 
 - [x] 备份各种开发配置信息 (包括装的软件/SDK,每个工具装的库,config 文件...)
 
