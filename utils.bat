@@ -145,7 +145,7 @@ goto :eof
     mkdir user-config & cd user-config
 
     xcopy %HOME%\.conda\ .conda\ /e/y/d
-    xcopy %HOME%\.config\ .config\ /e/y/d
+    xcopy %HOME%\.config\scoop\ .config\scoop\ /e/y/d
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
