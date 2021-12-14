@@ -86,9 +86,9 @@ jobs:
           dst_token: ${{ secrets.GITEE_TOKEN }}
           account_type: org
           force_update: true
-          white_list:
-          black_list: ['.github']
-          static_list:
+          # white_list: 
+          black_list: '.github'
+          # static_list:
 
       # - name: Mirror personal
       #   uses: Yikun/hub-mirror-action@master
