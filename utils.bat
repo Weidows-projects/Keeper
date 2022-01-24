@@ -97,20 +97,21 @@ goto :eof
 
     call xrepo scan > cpp\xrepo-scan.bak
 
-    dir /b %HOME%\.vscode\extensions > dir\dir-.vscode.bak
-    dir /b D:\Musics\Local > dir\dir-music.bak
-    dir /b D:\Software > dir\dir-software.bak
+    dir /b "%HOME%\.vscode\extensions" > dir\dir-.vscode.bak
+    dir /b "%OneDrive%\Audio\Local" > dir\dir-music.bak
+    dir /b "D:\Software" > dir\dir-software.bak
 
-    dir /b E:\mystream > game\dir-mystream.bak
-    xcopy %SCOOP%\apps\steam\current\steamapps\libraryfolders.vdf game\ /y/d
-    @REM 重装系统/wallpaper engine,所有壁纸会木大,所以备份
-    xcopy %SCOOP%\persist\steam\steamapps\workshop\*.acf game\ /y/d
-    xcopy E:\mystream\steamapps\workshop\*.acf game\ /y/d
+    dir /b "E:\mystream" > game\dir-mystream.bak
+    @REM 备份防止重装后,游戏/创意工坊木大
+    xcopy "%SCOOP%\apps\steam\current\steamapps\libraryfolders.vdf" game\ /y/d
+    xcopy "%SCOOP%\persist\steam\steamapps\workshop\*.acf" game\ /y/d
+    xcopy "E:\mystream\steamapps\workshop\*.acf" game\ /y/d
 
     call gh repo list > github\repolist-Weidows.bak
     call gh repo list Weidows-projects > github\repolist-Weidows-projects.bak
 
-    call npm -g list > node\npm-global.bak
+    call nvm list > node\nvm.bak
+    call npm list -g --depth=0 > node\npm-global.bak
     call yarn global list > node\yarn-global.bak
 
     call conda env export -n base > python\conda-env-base.yaml
@@ -120,6 +121,7 @@ goto :eof
     call scoop bucket list > scoop\scoop-buckets.bak
     @REM 获取当前文件夹名称
     @REM for /f "delims=" %%i in ("%cd%") do set folder=%%~ni
+    @REM 获取每个仓库git地址
     set currentPath=%cd%
     for /d %%i in (%SCOOP%\buckets\*) do (
       cd /d %%i
@@ -175,12 +177,12 @@ goto :eof
   start /b n0vadesktop
 
   @REM aria2: 直接通过shell启动会被它占用,所以另开
-  echo CreateObject("WScript.Shell").Run "aria2c --conf-path=D:\Game\Scoop\persist\aria2\conf",0 > aria2.vbs
+  echo CreateObject("WScript.Shell").Run "aria2c --conf-path=D:\Scoop\persist\aria2\conf",0 > aria2.vbs
   cscript //Nologo aria2.vbs
   del aria2.vbs
 
   @REM 酷狗
-  start /b D:\Software\KGMusic\KuGou.exe
+  start /b KuGou.exe
 goto :eof
 
 
