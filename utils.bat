@@ -9,7 +9,7 @@
   @REM !!!!一定要注意等号'='前后不要加空格!!!!
   @REM 不设置的话,备份默认存放在keeper内的 Programming-Configuration, 路径支持含空格
   @REM 例如: BACKUP_DIR=E:\OneDrive - Nima Company\Repo\Weidows-projects\Programming-Configuration
-  set BACKUP_DIR=
+  set BACKUP_DIR=%~dp0Repos\Weidows-projects\Programming-Configuration
 
 
 
