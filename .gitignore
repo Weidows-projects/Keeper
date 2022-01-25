@@ -1,2 +1,4 @@
 local
 Repos
+scoop-install.json
+scoop-manifest.json
