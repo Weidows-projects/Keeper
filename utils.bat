@@ -8,7 +8,7 @@
 
   @REM !!!!一定要注意等号'='前后不要加空格!!!!
   @REM 备份默认存放在keeper内的 Programming-Configuration, 路径支持含空格
-  set BACKUP_DIR=%~dp0Repos\Weidows-projects\Programming-Configuration
+  set BACKUP_DIR=
     if not defined BACKUP_DIR set BACKUP_DIR=%~dp0Programming-Configuration
 
   @REM 下载目录, 默认为 D:\Downloads
@@ -29,23 +29,8 @@
     cls
 
   @REM 改色
-    set /a a=%random%%%10
-    color 0%a%
-
-  @REM 初始化 choice
-    set choice=-1
-
-  @REM scoop 的 current 会吃字符,出现以下报错:
-    @REM D:\Scoop\apps\Keeper\current>ho           ``::::::::::::::::
-    @REM 'ho' is not recognized as an internal or external command,
-    @REM operable program or batch file.
-
-    @REM D:\Scoop\apps\Keeper\current>`':.          ':::::::::'                  ::::.. (1)exit
-    @REM '`':.' is not recognized as an internal or external command,
-    @REM operable program or batch file.
-
-    @REM D:\Scoop\apps\Keeper\current>goto 优先级过高只在 main 中用,其他的 只用 call
-    @REM The system cannot find the batch label specified - 优先级过高只在
+    set /a COLOR=%random%%%10
+    color 0%COLOR%
 
   echo                    .::::.
   echo                  .::::::::.
@@ -65,9 +50,8 @@
   echo  ...:::          :::::::::::::'              ``::. (2)backup
   echo  ````':.          ':::::::::'                  ::::.. (1)exit
   echo 输入选项:           '.:::::'                    ':'```:..
-  CHOICE /C 1234567
+  CHOICE /C 123456
   echo =============================================================================
-
 
 
   if %errorlevel%==1 exit
@@ -88,7 +72,7 @@ goto :eof
 
 
 @REM ==================================================================
-@REM 开机后设置备份,使用start是在新的终端同时进行的,call是按顺序依次
+@REM 备份,使用start是在新的终端同时进行的,call是按顺序依次
 @REM ==================================================================
 :backup
   mkdir %BACKUP_DIR% & cd /d %BACKUP_DIR%
@@ -182,26 +166,26 @@ goto :eof
 @REM 开机启动软件
 @REM ==================================================================
 :boot-starter
-  @REM 文件管理
-  start /b xyplorer.exe
+  @REM @REM 文件管理
+  @REM start /b xyplorer.exe
 
-  start /b Rainmeter
-  start /b MouseInc
-  start /b n0vadesktop
+  @REM start /b Rainmeter
+  @REM start /b MouseInc
+  @REM start /b n0vadesktop
 
-  @REM 浏览器
-  start /b microsoft-edge:
+  @REM @REM 浏览器
+  @REM start /b microsoft-edge:
 
-  @REM 酷狗
-  start /b KuGou.exe
+  @REM @REM 酷狗
+  @REM start /b KuGou.exe
 
-  @REM IDE
-  start /b code
-  @REM start /b idea64.exe
+  @REM @REM IDE
+  @REM start /b code
+  @REM @REM start /b idea64.exe
 
-  @REM 通讯
-  start /b TIM.exe
-  @REM start /b wechat-mod.exe
+  @REM @REM 通讯
+  @REM start /b TIM.exe
+  @REM @REM start /b wechat-mod.exe
 
   @REM aria2: 直接通过shell启动会被它占用,所以另开
   @REM 调用链: utils.bat -> aria2.vbs -> aria2.exe -> aria2.conf -> aria2.session
@@ -274,7 +258,6 @@ goto :eof
       echo #rpc-secret=12345678
       echo # 设置的 RPC 访问用户名, 此选项新版已废弃, 建议改用 --rpc-secret 选项
       echo #rpc-user=《USER》
-      echo # 设置的 RPC 访问密码, 此选项新版已废弃, 建议改用 --rpc-secret 选项
       echo #rpc-passwd=《PASSWD》
       echo.
       echo ## BT/PT 下载相关 ##
@@ -314,7 +297,7 @@ goto :eof
     )> %BACKUP_DIR%\others\aria2\aria2.conf
 
     @REM aria2.vbs
-    echo CreateObject("WScript.Shell").Run "aria2c --conf-path=%BACKUP_DIR%\others\aria2\aria2.conf",0> %BACKUP_DIR%\others\aria2\aria2.vbs
+    echo CreateObject("WScript.Shell").Run "aria2c --conf-path=%BACKUP_DIR%\others\aria2\aria2.conf",0 > %BACKUP_DIR%\others\aria2\aria2.vbs
     cscript //Nologo %BACKUP_DIR%\others\aria2\aria2.vbs
 
 goto :eof
@@ -380,5 +363,6 @@ goto :eof
   @REM 米游社
     @REM call conda activate base
     @REM call python AutoMihoyoBBS/main.py >> tasks.log
+
 
 goto :eof
