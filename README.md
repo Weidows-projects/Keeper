@@ -2,7 +2,7 @@
  * @Author: Weidows
  * @Date: 2020-11-28 17:36:36
  * @LastEditors: Weidows
- * @LastEditTime: 2021-11-30 18:17:13
+ * @LastEditTime: 2022-02-10 19:00:50
  * @FilePath: \Keeper\README.md
  * @Description:
 -->
@@ -40,7 +40,7 @@
 
 - 全堆在 [utils.bat](./utils.bat) 里,注释很明确; 下图为样式
 
-  <img src="https://i.loli.net/2021/11/30/dwC5itDyuMkjhWL.png" alt="20211130180628" />
+  ![](image/README/1644490835674.png)
 
 - [x] 备份各种开发配置信息 (包括装的软件/SDK,每个工具装的库,config 文件...)
 
