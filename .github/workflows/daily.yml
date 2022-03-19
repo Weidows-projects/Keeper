@@ -8,8 +8,8 @@ on:
   schedule:
     - cron: "0 0 * * *"
   # 标星时运行
-  watch:
-    types: [started]
+  # watch:
+  #   types: [started]
 
 jobs:
   autogreen:
@@ -66,13 +66,27 @@ jobs:
             git push Gitee tasks -f
           fi
 
-  weakup:
+  wakeup-and-checkssl:
     runs-on: ubuntu-latest
     steps:
-      - name: My-Tasks
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      - name: wakeup & Build
         run: |
-          # 唤醒LeanCloud评论管理系统
           curl ${{ secrets.URL }}
+
+          chmod +x checker.sh
+          ./checker.sh ${{ secrets.URL }}
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+
 
   mirror:
     runs-on: ubuntu-latest
@@ -86,7 +100,7 @@ jobs:
           dst_token: ${{ secrets.GITEE_TOKEN }}
           account_type: org
           force_update: true
-          # white_list: 
+          # white_list:
           black_list: '.github'
           # static_list:
 

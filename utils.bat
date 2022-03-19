@@ -100,7 +100,7 @@ goto :eof
 
     call xrepo scan > cpp\xrepo-scan.bak
 
-    dir /b "%SCOOP%\persist\vscode-portable\data\extensions" > dir\dir-.vscode.bak
+    dir /b "%SCOOP%\persist\vscode-portable-association\data\extensions" > dir\dir-.vscode.bak
     dir /b "%OneDrive%\Audio\Local" > dir\dir-music.bak
     dir /b "D:\Game" > dir\dir-software.bak
 
@@ -115,7 +115,7 @@ goto :eof
 
     call nvm list > node\nvm.bak
     call npm list -g --depth=0 > node\npm-global.bak
-    call yarn global list > node\yarn-global.bak
+    @REM call yarn global list > node\yarn-global.bak
 
     call conda env export -n base > python\conda-env-base.yaml
     call pip freeze > python\pip-list.bak
@@ -175,7 +175,7 @@ goto :eof
 @REM ==================================================================
 :boot-starter
   @REM 软件
-  start /b Rainmeter
+  @REM start /b Rainmeter
   @REM start /b n0vadesktop
 
   @REM 浏览器
@@ -200,7 +200,7 @@ goto :eof
 
 
 @REM ==================================================================
-@REM scoop-update / Bilibili
+@REM Daily: scoop-update / Bilibili
 @REM ==================================================================
 :daily-helper
   @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
