@@ -204,7 +204,7 @@ goto :eof
 @REM ==================================================================
 :daily-helper
   @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
-  cd /d %~dp0\local
+  cd /d %BACKUP_DIR%\backup
 
   @REM log
     for /l %%i in (1 1 5) do echo.>> log\tasks.log
@@ -213,6 +213,13 @@ goto :eof
 
   @REM scoop-update
     call scoop update | tee -a log\tasks.log
+
+  @REM dailycheckin (cmd会由于Unicode报错)
+    @REM call conda activate base
+    @REM start powershell dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
+
+  @REM 米游社
+    @REM call python AutoMihoyoBBS/main.py
 
   @REM bilibili
     cd BILIBILI-HELPER
@@ -247,14 +254,6 @@ goto :eof
 :test
   echo Testing...
 
-  @REM dailycheckin (cmd会由于Unicode报错)
-    @REM cd /d %~dp0\local
-    @REM call conda activate base
-    @REM start powershell dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
-
-  @REM 米游社
-    @REM cd local
-    @REM call python AutoMihoyoBBS/main.py
 
 goto :eof
 
