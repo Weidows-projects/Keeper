@@ -81,8 +81,6 @@ jobs:
           chmod +x checker.sh
           ./checker.sh ${{ secrets.URL }}
 
-          echo '${{ secrets.DAILY_CHECKIN_CONFIG }}' > config.json
-
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
