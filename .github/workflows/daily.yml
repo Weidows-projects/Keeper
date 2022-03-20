@@ -81,6 +81,8 @@ jobs:
           chmod +x checker.sh
           ./checker.sh ${{ secrets.URL }}
 
+          echo '${{ secrets.DAILY_CHECKIN_CONFIG }}' > config.json
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -124,7 +126,6 @@ jobs:
             pip install dailycheckin
 
             echo '${{ secrets.DAILY_CHECKIN_CONFIG }}' > config.json
-            echo '${{ secrets.DAILY_CHECKIN_CONFIG }}'
 
             # 已启用但报错: CSDN IQIYI
             dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
@@ -141,7 +142,6 @@ jobs:
 
             pip install -r ./requirements.txt
             echo '${{ secrets.AUTOMIHOYOBBS_CONFIG }}' > config/config.json
-            echo '${{ secrets.AUTOMIHOYOBBS_CONFIG }}'
 
             python main.py >/dev/null
           fi
