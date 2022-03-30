@@ -2,7 +2,7 @@
  * @Author: Weidows
  * @Date: 2020-11-28 17:36:36
  * @LastEditors: Weidows
- * @LastEditTime: 2022-03-20 00:58:44
+ * @LastEditTime: 2022-03-30 21:52:10
  * @FilePath: \Keeper\README.md
  * @Description:
 -->
@@ -48,6 +48,7 @@
 
 - [x] 各平台每日签到,某些交给 github-action 容易被查封,所以在本机手动跑.
 - [x] 用于管理开机启动/批量启动软件,aria2 后台启动(最佳方案)
+- [x] 原创 Hello 图床增量备份脚本.
 
 ![分割线](https://cdn.jsdelivr.net/gh/Weidows/Images/img/divider.png)
 

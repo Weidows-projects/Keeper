@@ -92,6 +92,9 @@ goto :eof
     set /p session=<bitwarden\session
     bw list items --session %session% >bitwarden\items.json
 
+    @REM 备份图床
+    python "scripts\hello.py" "Weidows" %BACKUP_DIR%\backup\
+
     cd ..
 
 
@@ -118,7 +121,8 @@ goto :eof
     @REM call yarn global list > node\yarn-global.bak
 
     call conda env export -n base > python\conda-env-base.yaml
-    call pip freeze > python\pip-list.bak
+    @REM call pip freeze > python\pip-list.bak
+    call pip list --format=freeze > python\pip-list.bak
 
     call scoop list > scoop\scoop-apps.bak
     call scoop bucket list > scoop\scoop-buckets.bak
@@ -253,7 +257,6 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
-
 
 goto :eof
 
