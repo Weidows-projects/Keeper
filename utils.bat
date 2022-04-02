@@ -6,6 +6,9 @@
   @REM 执行时涉及到中文,cmd 默认按照 GBK/GB2312 解析(VScode强行按UTF-8),所以不开启的话会出现:显示没错但存储时乱码这种问题
   chcp 65001
 
+  @REM 设置代理, 不然 hello 图床无法访问报错.
+  set http_proxy=http://127.0.0.1:7890 & set https_proxy=http://127.0.0.1:7890
+
   @REM !!!!一定要注意等号'='前后不要加空格!!!!
   @REM 备份默认存放在keeper内的 Programming-Configuration, 路径支持含空格
   set BACKUP_DIR=
@@ -14,7 +17,6 @@
   @REM 下载目录, 默认为 D:\Download
   set DOWNLOAD_DIR=
     if not defined DOWNLOAD_DIR set DOWNLOAD_DIR=D:\Download
-
 
 
 
@@ -93,7 +95,7 @@ goto :eof
     bw list items --session %session% >bitwarden\items.json
 
     @REM 备份图床
-    python "scripts\hello.py" "Weidows" %BACKUP_DIR%\backup\
+    python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
 
     cd ..
 
@@ -257,6 +259,7 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
+
 
 goto :eof
 

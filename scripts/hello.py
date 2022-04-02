@@ -3,7 +3,7 @@
 Author: Weidows
 Date: 2022-03-30 15:58:40
 LastEditors: Weidows
-LastEditTime: 2022-03-30 22:28:06
+LastEditTime: 2022-04-02 16:27:13
 FilePath: \Keeper\scripts\hello.py
 Description:          hello 图床备份脚本
 
@@ -13,6 +13,9 @@ Description:          hello 图床备份脚本
     第一个参数: 你的用户名
     第二个参数: 备份路径 (注意末尾带个 '\')
 
+注意:
+    要在开了代理的终端环境下运行, 否则可能报错
+    HTTPSConnectionPool(host='www.helloimg.com', port=443): Max retries exceeded
 !: *********************************************************************
 '''
 
