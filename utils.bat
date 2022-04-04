@@ -221,6 +221,21 @@ goto :eof
   @REM scoop-update
     call scoop update | tee -a log\tasks.log
 
+  @REM 521xueweihan/GitHub520
+    set filename=%windir%\System32\drivers\etc\hosts
+    set temp_file=%filename%.bak
+
+    @REM 获取指定字符串的行号
+    sed -n "/GitHub520 Host Start/=" %filename% > %temp_file%
+    set /p startLine=<%temp_file%
+    sed -n "/GitHub520 Host End/=" %filename% > %temp_file%
+    set /p endLine=<%temp_file%
+
+    sed %startLine%,%endLine%d %filename% > %temp_file%
+    xcopy %temp_file% %filename% /y/d
+
+    curl https://raw.hellogithub.com/hosts >> %filename%
+
   @REM dailycheckin (cmd会由于Unicode报错)
     @REM call conda activate base
     @REM start powershell dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
@@ -260,7 +275,7 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
-  python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
+
 
 goto :eof
 
