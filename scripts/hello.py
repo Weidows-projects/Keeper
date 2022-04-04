@@ -3,9 +3,9 @@
 Author: Weidows
 Date: 2022-03-30 15:58:40
 LastEditors: Weidows
-LastEditTime: 2022-04-02 16:27:13
+LastEditTime: 2022-04-04 13:01:21
 FilePath: \Keeper\scripts\hello.py
-Description:          hello 图床备份脚本
+Description:          Hello 图床多线程增量备份脚本
 
 命令行启动示例:
     python "scripts\hello.py" "username" .\
@@ -23,9 +23,22 @@ import json
 import os
 import sys
 import requests
+import threading
 
 
-class HttpUtils:
+class Utils:
+    BASE_URL = "https://www.helloimg.com/get-user-images/"
+
+    # D:\Repos\Weidows-projects\Keeper\Programming-Configuration\backup\Weidows
+    BACKUP_PATH = ""
+
+    # Weidows
+    USER_NAME = ""
+
+    LOCK = threading.Lock()
+
+    DATAS = []
+
     def __sendHttpGetWithHeader(url):
         try:
             return requests.get(url)
@@ -43,53 +56,45 @@ class HttpUtils:
     @staticmethod
     def getResponseJson(url, method):
         if method == "GET":
-            responseData = HttpUtils.__sendHttpGetWithHeader(url)
+            responseData = Utils.__sendHttpGetWithHeader(url)
         elif method == "POST":
-            responseData = HttpUtils.__sendHttpPostWithHeaders(url)
+            responseData = Utils.__sendHttpPostWithHeaders(url)
         return json.loads(responseData.text)
-
-
-class Config:
-    BASE_URL = "https://www.helloimg.com/get-user-images/"
-
-    # D:\Repos\Weidows-projects\Keeper\Programming-Configuration\backup\Weidows
-    BACKUP_PATH = ""
-
-    # Weidows
-    USER_NAME = ""
 
 
 def __init__():
     argv = sys.argv[1:]
 
     try:
-        Config.USER_NAME = argv[0]
-        Config.BACKUP_PATH = argv[1] + "hello"
+        Utils.USER_NAME = argv[0]
+        Utils.BACKUP_PATH = argv[1] + "hello"
     except IndexError:
         print("请正确输入参数中: 用户名 备份路径")
 
-    if os.path.exists(Config.BACKUP_PATH):
-        print("备份文件夹已存在: " + Config.BACKUP_PATH)
+    if os.path.exists(Utils.BACKUP_PATH):
+        print("备份文件夹已存在: " + Utils.BACKUP_PATH)
     else:
-        os.mkdir(Config.BACKUP_PATH)
-    os.chdir(Config.BACKUP_PATH)
+        os.mkdir(Utils.BACKUP_PATH)
+    os.chdir(Utils.BACKUP_PATH)
 
-    resJson = HttpUtils.getResponseJson(Config.BASE_URL + Config.USER_NAME,
+    Utils.DATAS = Utils.getResponseJson(Utils.BASE_URL + Utils.USER_NAME,
                                         "GET")
 
     os.remove("response.json")
     with open("response.json", 'wb') as f:
-        f.write(json.dumps(resJson).encode())
+        f.write(json.dumps(Utils.DATAS).encode())
         f.flush()
 
-    return resJson
 
-
-def main():
-    datas = __init__()
-    for data in datas:
+def multi_downloader():
+    while True:
+        Utils.LOCK.acquire()
+        if Utils.DATAS.__len__() == 0:
+            Utils.LOCK.release()
+            return
         # https://www.helloimg.com/images/2022/02/26/GVROC6.png
-        url = data["image"]
+        url = Utils.DATAS.pop()["image"]
+        Utils.LOCK.release()
 
         # 2022-02
         date = url[32:39].replace("/", "-")
@@ -104,10 +109,16 @@ def main():
             with open(path, 'wb') as f:
                 f.write(pic.content)
                 f.flush()
-            print(url + " 不存在，已下载")
+            print("Thread-" + threading.currentThread().name + ": " + path +
+                  " 不存在，已下载")
+
         else:
-            print(url + " 存在,跳过")
+            print("Thread-" + threading.currentThread().name + ": " + path +
+                  " 存在,跳过")
 
 
 if __name__ == '__main__':
-    main()
+    __init__()
+    # 8 线程
+    for i in range(8):
+        threading.Thread(target=multi_downloader).start()

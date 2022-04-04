@@ -183,6 +183,7 @@ goto :eof
   @REM 软件
   @REM start /b Rainmeter
   @REM start /b n0vadesktop
+  start /b steam
 
   @REM 浏览器
   start /b microsoft-edge:
@@ -259,7 +260,7 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
-
+  python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
 
 goto :eof
 
