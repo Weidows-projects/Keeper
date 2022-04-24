@@ -110,6 +110,7 @@ goto :eof
     dir /b "D:\Game" > dir\dir-software.bak
 
     dir /b "E:\mystream" > game\dir-mystream.bak
+    dir /b "E:\mystream\0x" > game\dir-mystream-0x.bak
     @REM 备份防止重装后,游戏/创意工坊木大
     xcopy "%SCOOP%\persist\steam\steamapps\libraryfolders.vdf" game\ /y/d
     xcopy "%SCOOP%\persist\steam\steamapps\workshop\*.acf" game\ /y/d
@@ -160,7 +161,7 @@ goto :eof
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
-    xcopy %HOME%\.yarnrc . /y/d
+    xcopy %HOME%\.yrmrc . /y/d
     xcopy %HOME%\.condarc . /y/d
     xcopy %HOME%\.gitconfig . /y/d
 
@@ -213,28 +214,24 @@ goto :eof
   @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
   cd /d %BACKUP_DIR%\backup
 
-  @REM log
-    for /l %%i in (1 1 5) do echo.>> log\tasks.log
-    set date =date /T
-    echo =================================%date%===========================>> log\tasks.log
+  @REM logger
+    @REM 2022-04-24
+    echo %date:~3,14%| sed -e 's/\//-/g' > log\last-run.txt
+    set /p logFile=<log\last-run.txt
+    time /T >> log\last-run.txt
+
+    @REM 2022-04-24.log
+    set logFile=%BACKUP_DIR%\backup\log\tasks\%logFile%.log
+
+    for /l %%i in (1 1 5) do echo.>> %logFile%
+    time /T >> %logFile%
+    echo =====================================================================>> %logFile%
+
+  @REM https://github.com/521xueweihan/GitHub520
+    cmd /c %~dp0scripts\GitHub520\GitHub520.bat | tee -a %logFile%
 
   @REM scoop-update
-    call scoop update | tee -a log\tasks.log
-
-  @REM 521xueweihan/GitHub520
-    set filename=%windir%\System32\drivers\etc\hosts
-    set temp_file=%filename%.bak
-
-    @REM 获取指定字符串的行号
-    sed -n "/GitHub520 Host Start/=" %filename% > %temp_file%
-    set /p startLine=<%temp_file%
-    sed -n "/GitHub520 Host End/=" %filename% > %temp_file%
-    set /p endLine=<%temp_file%
-
-    sed %startLine%,%endLine%d %filename% > %temp_file%
-    xcopy %temp_file% %filename% /y/d
-
-    curl https://raw.hellogithub.com/hosts >> %filename%
+    call scoop update | tee -a %logFile%
 
   @REM dailycheckin (cmd会由于Unicode报错)
     @REM call conda activate base
@@ -245,7 +242,7 @@ goto :eof
 
   @REM bilibili
     cd BILIBILI-HELPER
-    call java -jar BILIBILI-HELPER.jar | tee -a ..\log\tasks.log
+    call java -jar BILIBILI-HELPER.jar | tee -a %logFile%
     cd ..
     rd /S/Q D:\tmp
 goto :eof
@@ -275,7 +272,6 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
-
 
 goto :eof
 

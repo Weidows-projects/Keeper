@@ -2,7 +2,7 @@
  * @Author: Weidows
  * @Date: 2020-11-28 17:36:36
  * @LastEditors: Weidows
- * @LastEditTime: 2022-04-04 16:05:33
+ * @LastEditTime: 2022-04-24 15:07:13
  * @FilePath: \Keeper\README.md
  * @Description:
 -->
@@ -49,7 +49,9 @@
 - [x] 各平台每日签到,某些交给 github-action 容易被查封,所以在本机手动跑.
 - [x] 原创用于管理开机启动/批量启动软件,aria2 后台启动(最佳方案)
 - [x] [原创 Hello 图床多线程增量备份脚本.](./scripts/hello.py)
-- [x] 刷新本机 GitHub 加速 hosts 地址 (不会影响其他的) <sup id='cite_ref-6'>[\[6\]](#cite_note-6)</sup>
+- [x] [刷新本机 GitHub520 - hosts](./scripts/GitHub520/) <sup id='cite_ref-7'>[\[7\]](#cite_note-7)</sup> <sup id='cite_ref-8'>[\[8\]](#cite_note-8)</sup> <sup id='cite_ref-9'>[\[9\]](#cite_note-9)</sup>
+
+  非 append/overwrite, 不会改变其他 host; [此处 Release 中打包好了 64 位可执行文件](https://github.com/Weidows-projects/scoop-3rd/releases/tag/1.0.0)
 
 ![分割线](https://cdn.jsdelivr.net/gh/Weidows/Images/img/divider.png)
 
@@ -67,4 +69,8 @@
 
 <a name='cite_note-6' href='#cite_ref-6'>[6]</a>: [Womsxd/AutoMihoyoBBS](https://github.com/Womsxd/AutoMihoyoBBS)
 
-<a name='cite_note-6' href='#cite_ref-6'>[6]</a>: [521xueweihan/GitHub520](https://github.com/521xueweihan/GitHub520)
+<a name='cite_note-7' href='#cite_ref-7'>[7]</a>: [521xueweihan/GitHub520](https://github.com/521xueweihan/GitHub520)
+
+<a name='cite_note-8' href='#cite_ref-8'>[8]</a>: https://github.com/mbuilov/sed-windows
+
+<a name='cite_note-9' href='#cite_ref-9'>[9]</a>: https://github.com/islamadel/bat2exe
