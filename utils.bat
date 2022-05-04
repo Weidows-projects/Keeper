@@ -273,6 +273,8 @@ goto :eof
 :test
   echo Testing...
 
+  python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
+
 goto :eof
 
 

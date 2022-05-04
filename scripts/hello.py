@@ -3,7 +3,7 @@
 Author: Weidows
 Date: 2022-03-30 15:58:40
 LastEditors: Weidows
-LastEditTime: 2022-04-04 13:01:21
+LastEditTime: 2022-05-04 18:55:56
 FilePath: \Keeper\scripts\hello.py
 Description:          Hello 图床多线程增量备份脚本
 
@@ -19,11 +19,14 @@ Description:          Hello 图床多线程增量备份脚本
 !: *********************************************************************
 '''
 
+from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 import sys
+from isort import Config
 import requests
 import threading
+import multiprocessing
 
 
 class Utils:
@@ -38,6 +41,8 @@ class Utils:
     LOCK = threading.Lock()
 
     DATAS = []
+
+    CPU_COUNT = multiprocessing.cpu_count()
 
     def __sendHttpGetWithHeader(url):
         try:
@@ -102,6 +107,7 @@ def multi_downloader():
         # 2022-02/GVROC6.png
         path = date + '/' + url[43:]
 
+        is_exists = False
         if not os.path.exists(path):
             if not os.path.exists(date):
                 os.mkdir(date)
@@ -109,16 +115,18 @@ def multi_downloader():
             with open(path, 'wb') as f:
                 f.write(pic.content)
                 f.flush()
-            print("Thread-" + threading.currentThread().name + ": " + path +
-                  " 不存在，已下载")
-
         else:
-            print("Thread-" + threading.currentThread().name + ": " + path +
-                  " 存在,跳过")
+            is_exists = True
+
+        Utils.LOCK.acquire()
+        print(
+            f"{path} is_exists:{is_exists} {threading.currentThread().name} backuped"
+        )
+        Utils.LOCK.release()
 
 
 if __name__ == '__main__':
     __init__()
-    # 8 线程
-    for i in range(8):
-        threading.Thread(target=multi_downloader).start()
+    with ThreadPoolExecutor(max_workers=Utils.CPU_COUNT) as executor:
+        for i in range(Utils.CPU_COUNT):
+            executor.submit(multi_downloader)
