@@ -34,7 +34,7 @@ jobs:
             git config --local user.email ${{ secrets.PUSH_EMAIL }}
           else
             git config --local user.name "github-actions[bot]"
-            git config --local user.email "github-actions@github.com"
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
           fi
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
@@ -85,7 +85,12 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # external_repository: username/external-repository
+          # publish_branch: your-branch  # default: gh-pages
           publish_dir: .
+          # 如果不设置下面, 会以用户名义提交, 与上面的Auto-green重复
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
 
   mirror:
     runs-on: ubuntu-latest

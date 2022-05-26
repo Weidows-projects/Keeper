@@ -2,7 +2,7 @@
  * @Author: Weidows
  * @Date: 2020-11-28 17:36:36
  * @LastEditors: Weidows
- * @LastEditTime: 2022-04-24 15:07:13
+ * @LastEditTime: 2022-05-26 18:06:35
  * @FilePath: \Keeper\README.md
  * @Description:
 -->
@@ -47,7 +47,7 @@
   `机子有价,数据无价`,可参考我的备份仓库: [Weidows-projects/Programming-Configuration](https://github.com/Weidows-projects/Programming-Configuration)
 
 - [x] 各平台每日签到,某些交给 github-action 容易被查封,所以在本机手动跑.
-- [x] 原创用于管理开机启动/批量启动软件,aria2 后台启动(最佳方案)
+- [x] [原创用于 aria2 后台启动最佳方案](./scripts/aria2.bat)
 - [x] [原创 Hello 图床多线程增量备份脚本.](./scripts/hello.py)
 - [x] [刷新本机 GitHub520 - hosts](./scripts/GitHub520/) <sup id='cite_ref-7'>[\[7\]](#cite_note-7)</sup> <sup id='cite_ref-8'>[\[8\]](#cite_note-8)</sup> <sup id='cite_ref-9'>[\[9\]](#cite_note-9)</sup>
 
