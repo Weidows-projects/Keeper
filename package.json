@@ -1,0 +1,14 @@
+{
+  "name": "docker",
+  "version": "1.0.0",
+  "description": "脚本文件",
+  "main": "index.js",
+  "repository": "https://github.com/Weidows/docker.git",
+  "author": "Weidows <utsuko27@qq.com>",
+  "license": "MIT",
+  "scripts": {
+    "init": "git submodule update --init --recursive",
+    "docker-compose": "docker-compose -f scripts/docker/docker-compose.yml up -d",
+    "utils": "utils.bat"
+  }
+}

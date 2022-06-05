@@ -1,0 +1,93 @@
+version: "3.1"
+services:
+
+# =================================数据库=================================
+  redis: # 无密码
+    image: redis:latest
+    restart: always
+    container_name: "redis-app"
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+    - 6379:6379
+    volumes:
+    - ./data/redis.conf:/usr/local/etc/redis/redis.conf
+    - ./data/redis:/data/redis
+
+  mongo: # root-2333
+    image: mongo:latest
+    restart: always
+    container_name: "mongo-app"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 2333
+    ports:
+    - 27017:27017
+    volumes:
+    - ./data/mongo:/etc/mongo
+
+  mariadb: # root-2333
+    image: mariadb:latest
+    restart: always
+    container_name: "mariadb-app"
+    ports:
+      # 端口映射
+      - 3306:3306
+    volumes:
+      # 容器与宿主机时间同步
+      # - ./data/mariadb/localtime:/etc/localtime
+      # 数据库目录映射
+      - ./data/mariadb/mariadb:/var/lib/mysql
+      # （推荐）如果要使用自定义的MySQL配置，则可以在主机上的目录中创建备用配置文件，然后将该目录位置/etc/mysql/conf.d安装在mariadb容器内。自己所需的配置文件可以放在自己服务器 ./data/mysql.conf 里面
+      - ./data/mariadb/conf.d:/etc/mysql/conf.d
+    environment:
+      TIME_ZONE: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 2333
+
+  # mysql:
+  #   image: mysql:latest
+  #   container_name: "mysql-app"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 2333
+  #   command:
+  #     --default-authentication-plugin=mysql_native_password
+  #     --character-set-server=utf8mb4
+  #     --collation-server=utf8mb4_general_ci
+  #     --explicit_defaults_for_timestamp=true
+  #     --lower_case_table_names=1
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ./data/mysql:/var/lib/mysql
+
+# =================================管理=================================
+  qing-long: # 青龙面板 Weidows-2333
+    image: whyour/qinglong:latest
+    container_name: "qinglong-app"
+    volumes:
+      - ./data/ql/config:/ql/config
+      - ./data/ql/db:/ql/db
+      - ./data/ql/log:/ql/log
+      - ./data/ql/repo:/ql/repo
+      - ./data/ql/scripts:/ql/scripts
+    ports:
+      - "0.0.0.0:5700:5700"
+    environment:
+      - ENABLE_HANGUP=true
+      - ENABLE_WEB_PANEL=true
+    # restart:
+    # no，默认策略，在容器退出时不重启容器,正确写法是不填,而不是restart:no
+    # on-failure，在容器非正常退出时（退出状态非0），才会重启容器
+    # on-failure:3，在容器非正常退出时重启容器，最多重启3次
+    # always，在容器退出时总是重启容器
+    # unless-stopped，在容器退出时总是重启容器，但是不考虑在Docker守护进程启动时就已经停止了的容器
+
+  portainer:
+    #image: portainer/portainer  # 官方版
+    image: 6053537/portainer  # 汉化版
+    container_name: portainer
+    restart: always
+    ports:
+      - 9090:9000
+    volumes:
+      - ./data/portainer:/data/portainer
+      - /var/run/docker.sock:/var/run/docker.sock
