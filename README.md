@@ -34,7 +34,7 @@
   | DAILY_CHECKIN_CONFIG |                                                       [dailycheckin](https://github.com/Sitoi/dailycheckin) 的 config.json 配置文件内容                                                       |
   | AUTOMIHOYOBBS_CONFIG |                                                     [automihoyobbs](https://github.com/Womsxd/AutoMihoyoBBS) 的 config.json 配置文件内容                                                      |
 
-![分割线](https://cdn.jsdelivr.net/gh/Weidows/Images/img/divider.png)
+![分割线](https://www.helloimg.com/images/2022/07/01/ZM0SoX.png)
 
 # 本机
 
@@ -53,7 +53,7 @@
 
   非 append/overwrite, 不会改变其他 host; [此处 Release 中打包好了 64 位可执行文件](https://github.com/Weidows-projects/scoop-3rd/releases/tag/1.0.0)
 
-![分割线](https://cdn.jsdelivr.net/gh/Weidows/Images/img/divider.png)
+![分割线](https://www.helloimg.com/images/2022/07/01/ZM0SoX.png)
 
 # 借物表
 
