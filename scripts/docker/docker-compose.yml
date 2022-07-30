@@ -10,8 +10,8 @@ services:
     ports:
     - 6379:6379
     volumes:
-    - ./data/redis.conf:/usr/local/etc/redis/redis.conf
     - ./data/redis:/data/redis
+    - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   mongo: # root-2333
     image: mongo:latest
@@ -58,6 +58,27 @@ services:
   #     - 3306:3306
   #   volumes:
   #     - ./data/mysql:/var/lib/mysql
+
+  # https://blog.csdn.net/Blanchedingding/article/details/89890663
+  neo4j:
+    image: neo4j:latest
+    volumes:
+      - ./data/neo4j/data:/data
+      # - ./data/neo4j/conf:/var/lib/neo4j/conf
+      - ./data/neo4j/mnt:/var/lib/neo4j/import
+      - ./data/neo4j/plugins:/plugins
+      - ./data/neo4j/logs:/var/lib/neo4j/logs
+    restart: always
+    ports:
+      # 数据库前端管理界面
+      - 7474:7474
+      # 数据库后端端口, 手动转发这个之后, 后端才能登录
+      - 7687:7687
+    environment:
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+      - NEO4J_dbms_memory_heap_maxSize=4G
+      #修改默认密码, 用户名必须是 neo4j 不能改
+      - NEO4J_AUTH=neo4j/2333
 
 # =================================管理=================================
   qing-long: # 青龙面板 Weidows-2333
