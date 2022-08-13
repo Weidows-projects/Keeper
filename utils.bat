@@ -158,6 +158,7 @@ goto :eof
 
     xcopy %HOME%\.conda\ .conda\ /e/y/d
     xcopy %HOME%\.config\scoop\ .config\scoop\ /e/y/d
+    xcopy %HOME%\.config\projects.json .config\ /y/d
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
@@ -193,7 +194,7 @@ goto :eof
   start /b KuGou.exe
 
   @REM 通讯
-  start /b qq.exe
+  @REM start /b qq.exe
   @REM start /b wechat-mod.exe
 
   @REM 工具

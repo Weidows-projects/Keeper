@@ -8,10 +8,11 @@ services:
     container_name: "redis-app"
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
-    - 6379:6379
+      - 6379:6379
     volumes:
-    - ./data/redis:/data/redis
-    - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis:/data/redis
+      # 容器启动时把 ./data/redis/redis.conf 挂载到 /usr/local/etc/redis/redis.conf
+      - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   mongo: # root-2333
     image: mongo:latest
@@ -21,9 +22,9 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 2333
     ports:
-    - 27017:27017
+      - 27017:27017
     volumes:
-    - ./data/mongo:/etc/mongo
+      - ./data/mongo:/etc/mongo
 
   mariadb: # root-2333
     image: mariadb:latest
