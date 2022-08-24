@@ -2,7 +2,7 @@
  * @Author: Weidows
  * @Date: 2020-11-28 17:36:36
  * @LastEditors: Weidows
- * @LastEditTime: 2022-05-26 18:06:35
+ * @LastEditTime: 2022-08-24 12:25:44
  * @FilePath: \Keeper\README.md
  * @Description:
 -->
@@ -22,6 +22,7 @@
 - [x] 同步 github 仓库到 gitee. <sup id='cite_ref-3'>[\[3\]](#cite_note-3)</sup>
 - [x] 访问唤醒+检查 SSL 状态 [(如 LeanCloud 评论后台 / 博客后台,Demo 地址)](https://weidows-projects.github.io/Keeper/) <sup id='cite_ref-4'>[\[4\]](#cite_note-4)</sup>
 - [x] 调用 dailycheckin / automihoyobbs 定时任务 <sup id='cite_ref-5'>[\[5\]](#cite_note-5)</sup> <sup id='cite_ref-6'>[\[6\]](#cite_note-6)</sup>
+- [x] 调用更新 waka-box <sup id='cite_ref-10'>[\[10\]](#cite_note-10)</sup>
 
 - 进入 settings 配置 secret :
 
@@ -33,6 +34,8 @@
   |     GITEE_TOKEN      |                                            用于镜像时自动创建不存在的仓库,Gitee 可以在[这里](https://gitee.com/profile/personal_access_tokens)找到                                            |
   | DAILY_CHECKIN_CONFIG |                                                       [dailycheckin](https://github.com/Sitoi/dailycheckin) 的 config.json 配置文件内容                                                       |
   | AUTOMIHOYOBBS_CONFIG |                                                     [automihoyobbs](https://github.com/Womsxd/AutoMihoyoBBS) 的 config.json 配置文件内容                                                      |
+  |   WAKATIME_API_KEY   |                                                                                 waka-box 需要的 wakatime API                                                                                  |
+  |       GH_TOKEN       |                                                                       更新 waka-box 需要用带有 Gist 权限的 GitHub TOKEN                                                                       |
 
 ![分割线](https://www.helloimg.com/images/2022/07/01/ZM0SoX.png)
 
@@ -74,3 +77,5 @@
 <a name='cite_note-8' href='#cite_ref-8'>[8]</a>: https://github.com/mbuilov/sed-windows
 
 <a name='cite_note-9' href='#cite_ref-9'>[9]</a>: https://github.com/islamadel/bat2exe
+
+<a name='cite_note-10' href='#cite_ref-10'>[10]</a>: https://github.com/YouEclipse/waka-box-go
