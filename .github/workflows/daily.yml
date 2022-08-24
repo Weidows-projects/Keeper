@@ -78,16 +78,17 @@ jobs:
       GIST_TIMESTYLE: SHORT
 
     steps:
-      - name: Set up Go 1.x
+      - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.14
+          go-version: ^1.18
         id: go
 
       - name: Clone repository
         uses: actions/checkout@v3
         with:
-          repository: 'YouEclipse/waka-box-go'
+          repository: 'XiaoMiku01/waka-box-go'
+          # 设置 path 的话, checkout 之后需要 cd 切进去
           # path: 'waka-box-go'
 
       - name: Update-gist
