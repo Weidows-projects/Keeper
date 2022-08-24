@@ -17,10 +17,10 @@ jobs:
       GIST_TIMESTYLE: SHORT
 
     steps:
-      - name: Set up Go 1.x
+      - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: ^1.14
+          go-version: ^1.18
         id: go
 
       - name: Clone repository
@@ -28,7 +28,7 @@ jobs:
         with:
           repository: 'XiaoMiku01/wakatime-go'
           # 设置 path 的话, checkout 之后需要 cd 切进去
-          # path: 'waka-box-go'
+          path: 'waka-box-go'
 
       - name: Update-gist
-        run: go run ./cmd/box/main.go
+        run: go run ./waka-box-go/cmd/box/main.go
