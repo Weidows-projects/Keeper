@@ -28,7 +28,7 @@ jobs:
         with:
           repository: 'XiaoMiku01/waka-box-go'
           # 设置 path 的话, checkout 之后需要 cd 切进去
-          path: 'waka-box-go'
+          # path: 'waka-box-go'
 
       - name: Update-gist
         run: go run ./cmd/box/main.go
