@@ -172,7 +172,7 @@ jobs:
             cd AutoMihoyoBBS
 
             pip install -r ./requirements.txt
-            echo '${{ secrets.AUTOMIHOYOBBS_CONFIG }}' > config/config.json
+            echo '${{ secrets.AUTOMIHOYOBBS_CONFIG }}' > config/config.yaml
 
             python main.py >/dev/null
           fi
