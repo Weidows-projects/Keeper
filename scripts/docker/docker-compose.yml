@@ -69,7 +69,7 @@ services:
       - ./data/neo4j/mnt:/var/lib/neo4j/import
       - ./data/neo4j/plugins:/plugins
       - ./data/neo4j/logs:/var/lib/neo4j/logs
-    restart: always
+    # restart: always
     ports:
       # 数据库前端管理界面
       - 7474:7474
@@ -85,6 +85,7 @@ services:
   qing-long: # 青龙面板 Weidows-2333
     image: whyour/qinglong:latest
     container_name: "qinglong-app"
+    # restart: always
     volumes:
       - ./data/ql/config:/ql/config
       - ./data/ql/db:/ql/db
@@ -113,3 +114,11 @@ services:
     volumes:
       - ./data/portainer:/data/portainer
       - /var/run/docker.sock:/var/run/docker.sock
+
+  SUSTechPOINTS:
+    image: juhaoming/sustechpoints:v1.0.0
+    # restart: always
+    ports:
+      - 8081:8081
+    volumes:
+      - ./data/SUSTechPOINTS:/root/SUSTechPOINTS/data

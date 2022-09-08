@@ -89,6 +89,7 @@ goto :eof
 
     @REM 备份ssh 目录后都必须加个'\' (比如.ssh有可能是目录,也可能是文件,而.ssh\只可能是目录)
     xcopy %HOME%\.ssh\ .ssh\ /e/y/d
+    xcopy %HOME%\_netrc . /y/d
 
     @REM 备份 bw; 文档: https://help.bitwarden.ltd/getting-started/bitwarden-cli
     set /p session=<bitwarden\session
@@ -109,8 +110,8 @@ goto :eof
     dir /b "%OneDrive%\Audio\Local" > dir\dir-music.bak
     dir /b "D:\Game" > dir\dir-software.bak
 
-    dir /b "E:\mystream" > game\dir-mystream.bak
-    dir /b "E:\mystream\0x" > game\dir-mystream-0x.bak
+    dir /b "E:\mystream" > game\mystream.bak
+    dir /b "E:\mystream\0x" > game\mystream-0x.bak
     @REM 备份防止重装后,游戏/创意工坊木大
     xcopy "%SCOOP%\persist\steam\steamapps\libraryfolders.vdf" game\ /y/d
     xcopy "%SCOOP%\persist\steam\steamapps\workshop\*.acf" game\ /y/d
@@ -118,6 +119,9 @@ goto :eof
 
     call gh repo list > github\repolist-Weidows.bak
     call gh repo list Weidows-projects > github\repolist-Weidows-projects.bak
+
+    dir /b "%GOPATH%\bin" > golang\go-install.bak
+    call go env > golang\go-env.bak
 
     call nvm list > node\nvm.bak
     call npm list -g --depth=0 > node\npm-global.bak
@@ -185,7 +189,7 @@ goto :eof
   @REM 软件
   @REM start /b Rainmeter
   @REM start /b n0vadesktop
-  start /b steam
+  @REM start /b steam
 
   @REM 浏览器
   start /b microsoft-edge:
@@ -276,9 +280,5 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
-
-  @REM python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
-
-  @REM cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR%
 
 goto :eof
