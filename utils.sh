@@ -3,12 +3,13 @@
  # @Author: Weidows
  # @Date: 2022-08-12 18:53:31
  # @LastEditors: Weidows
- # @LastEditTime: 2022-08-24 11:41:18
- # @FilePath: \Keeper\utils.sh
+ # @LastEditTime: 2022-09-19 16:26:12
+ # @FilePath: /Keeper/utils.sh
  # @Description:
+ #    此文件换行符需要用LF, CRLF是Windows下的
+ #    TODO 迁移 bat 到 sh
  # @!: *********************************************************************
 ###
-# TODO 迁移 bat 到 sh
 
 # ==================================================================
 # Initialization
@@ -34,7 +35,7 @@
 # ==================================================================
 # 备份
 # ==================================================================
-backup(){
+backup (){
   mkdir -p ${BACKUP_DIR} && cd ${BACKUP_DIR}
 
   # lists
@@ -53,8 +54,12 @@ backup(){
 
     cd ..
 
-  # ~/
 
+  # ~/
+    mkdir user-config & cd user-config
+
+    # 会覆盖掉之前的
+    cp ~/.zshrc .
 }
 
 
