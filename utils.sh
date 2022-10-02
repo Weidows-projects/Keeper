@@ -16,7 +16,7 @@
 # ==================================================================
   BACKUP_DIR=
     # dirname $0 脚本所在路径
-    if [ ! $BACKUP_DIR ]; then BACKUP_DIR=`dirname $0`/Programming-Configuration; fi
+    if [ ! "$BACKUP_DIR" ]; then BACKUP_DIR=$(dirname "$0")/Programming-Configuration; fi
 
     # if [ -d "$HOME/backup" ]; then
     #   BACKUP_DIR="$HOME/backup"
@@ -36,10 +36,10 @@
 # 备份
 # ==================================================================
 backup (){
-  mkdir -p ${BACKUP_DIR} && cd ${BACKUP_DIR}
+  mkdir -p "${BACKUP_DIR}" && cd "${BACKUP_DIR}" || exit
 
   # lists
-    mkdir lists & cd lists
+    mkdir lists & cd lists || exit
 
     # Homebrew
     brew list > scoop/brew-list.bak
@@ -48,7 +48,7 @@ backup (){
 
 
   # 其他
-    mkdir others & cd others
+    mkdir others & cd others || exit
 
     cp /etc/hosts hosts/hosts.mac
 
@@ -56,7 +56,7 @@ backup (){
 
 
   # ~/
-    mkdir user-config & cd user-config
+    mkdir user-config & cd user-config || exit
 
     # 会覆盖掉之前的
     cp ~/.zshrc .
