@@ -9,25 +9,36 @@
 @REM  * @!: **********************************************************
 @echo off
 
-@REM set filename=%windir%\System32\drivers\etc\hosts
-set filename=C:\Windows\System32\drivers\etc\hosts
-set temp_file=%filename%.bak
+@REM set file=%windir%\System32\drivers\etc\hosts
+set file=C:\Windows\System32\drivers\etc\hosts
+set bak_file=%file%.bak
+set curl_file=%file%.github
 
 @REM 获取指定字符串的行号
-sed -n "/GitHub520 Host Start/=" %filename% > %temp_file%
-set /p startLine=<%temp_file%
-sed -n "/GitHub520 Host End/=" %filename% > %temp_file%
-set /p endLine=<%temp_file%
+sed -n "/GitHub520 Host Start/=" %file% > %bak_file%
+set /p startLine=<%bak_file%
+sed -n "/GitHub520 Host End/=" %file% > %bak_file%
+set /p endLine=<%bak_file%
 
 if "%startLine%,%endLine%d"==",d" (
   echo GitHub520 not exists, will append
-  copy %filename% %temp_file% /Y
+  copy %file% %bak_file% /Y
 ) else (
   echo GitHub520 exists, will refresh
-  sed %startLine%,%endLine%d %filename% > %temp_file%
-  copy %temp_file% %filename% /Y
+  sed %startLine%,%endLine%d %file% > %bak_file%
+  copy %bak_file% %file% /Y
 )
-curl https://raw.hellogithub.com/hosts >> %filename%
 
-echo.
+@REM https://github.com/521xueweihan/GitHub520
+curl https://raw.hellogithub.com/hosts > %curl_file%
+@REM 去除错误信息, 如下
+@REM <html>
+@REM <head><title>502 Bad Gateway</title></head>
+@REM <body bgcolor="white">
+@REM <center><h1>502 Bad Gateway</h1></center>
+@REM <hr><center>nginx/1.14.0 (Ubuntu)</center>
+@REM </body>
+@REM </html>
+sed "/</d" %curl_file% >> %file%
+
 echo Finished.

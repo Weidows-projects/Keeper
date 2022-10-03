@@ -153,6 +153,7 @@ goto :eof
     xcopy %windir%\System32\drivers\etc\ hosts\ /e/y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy D:\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 .\PowerShell\ /e/y/d
+    xcopy C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json .\WindowsTerminal\ /e/y/d
 
     cd ..
 
