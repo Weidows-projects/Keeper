@@ -1,3 +1,6 @@
 [submodule "Programming-Configuration"]
 	path = Programming-Configuration
 	url = https://github.com/Weidows-projects/Programming-Configuration.git
+[submodule "scripts/bitwarden-ssh-agent"]
+	path = scripts/bitwarden-ssh-agent
+	url = https://github.com/joaojacome/bitwarden-ssh-agent

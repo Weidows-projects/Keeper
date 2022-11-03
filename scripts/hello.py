@@ -3,7 +3,7 @@
 Author: Weidows
 Date: 2022-03-30 15:58:40
 LastEditors: Weidows
-LastEditTime: 2022-05-04 18:55:56
+LastEditTime: 2022-11-03 12:29:01
 FilePath: \Keeper\scripts\hello.py
 Description:          Hello 图床多线程增量备份脚本
 
@@ -38,6 +38,9 @@ class Utils:
     # Weidows
     USER_NAME = ""
 
+    # 不带 agent 的话会被防火墙拦截: <h1><span>拒绝非浏览器请求</span></h1>
+    AGENT = {'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)'}
+
     LOCK = threading.Lock()
 
     DATAS = []
@@ -46,7 +49,7 @@ class Utils:
 
     def __sendHttpGetWithHeader(url):
         try:
-            return requests.get(url)
+            return requests.get(url, headers=Utils.AGENT)
         except Exception as e:
             print(e)
             return None
@@ -111,7 +114,7 @@ def multi_downloader():
         if not os.path.exists(path):
             if not os.path.exists(date):
                 os.mkdir(date)
-            pic = requests.get(url)
+            pic = requests.get(url, headers=Utils.AGENT)
             with open(path, 'wb') as f:
                 f.write(pic.content)
                 f.flush()

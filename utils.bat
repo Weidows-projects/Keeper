@@ -43,28 +43,43 @@
   echo             ..::::::::::::.
   echo           ``::::::::::::::::
   echo            ::::``:::::::::'        .:::.
-  echo           ::::'   ':::::'       .::::::::.
-  echo         .::::'    ::::::     .:::::::'::::. (6)test / change color
-  echo        .:::'     :::::::  .:::::::::' ':::::. (5)dir
+  echo           ::::'   ':::::'       .::::::::.(7)restart-sharemouse
+  echo         .::::'    ::::::     .:::::::'::::. (6)dir
+  echo        .:::'     :::::::  .:::::::::' ':::::. (5)backup
   echo       .::'       ::::::.:::::::::'      ':::::. (4)daily-helper
   echo      .::'        :::::::::::::::'         ``::::. (3)boot-starter
-  echo  ...:::          :::::::::::::'              ``::. (2)backup
+  echo  ...:::          :::::::::::::'              ``::. (2)test / change color
   echo  ````':.          ':::::::::'                  ::::.. (1)exit
   echo 输入选项:           '.:::::'                    ':'```:..
-  CHOICE /C 123456
+  CHOICE /C 1234567
   echo =============================================================================
 
 
   if %errorlevel%==1 exit
-  if %errorlevel%==2 call :backup
+  if %errorlevel%==2 call :test
   if %errorlevel%==3 call :boot-starter
   if %errorlevel%==4 call :daily-helper
-  if %errorlevel%==5 call :dir
-  if %errorlevel%==6 call :test
+  if %errorlevel%==5 call :backup
+  if %errorlevel%==6 call :dir
+  if %errorlevel%==7 call :restart-sharemouse
 
 
   @REM 暂停-查看程序输出-自循环; 视 goto 优先级过高只在 main 中用,其他的 只用 call
     pause & goto :circle
+goto :eof
+
+
+
+
+
+
+@REM ==================================================================
+@REM 测试
+@REM ==================================================================
+:test
+  echo Testing...
+
+
 goto :eof
 
 
@@ -92,8 +107,9 @@ goto :eof
     xcopy %HOME%\_netrc . /y/d
 
     @REM 备份 bw; 文档: https://help.bitwarden.ltd/getting-started/bitwarden-cli
-    set /p session=<bitwarden\session
-    bw list items --session %session% >bitwarden\items.json
+    set /p BW_SESSION=<bitwarden\session
+    bw list items --session %BW_SESSION% >bitwarden\items.json
+    @REM python ..\..\scripts\bitwarden-ssh-agent\bw_add_sshkeys.py -f ssh --session %BW_SESSION%
 
     @REM 备份图床
     python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
@@ -107,7 +123,7 @@ goto :eof
     call xrepo scan > cpp\xrepo-scan.bak
 
     dir /b "%SCOOP%\persist\vscode-portable-association\data\extensions" > dir\dir-.vscode.bak
-    dir /b "%OneDrive%\Audio\Local" > dir\dir-music.bak
+    dir /b "%OneDrive%\Audio\Local\云盘" > dir\dir-music.bak
     dir /b "D:\Game" > dir\dir-software.bak
 
     dir /b "E:\mystream" > game\mystream.bak
@@ -191,6 +207,7 @@ goto :eof
   @REM start /b Rainmeter
   @REM start /b n0vadesktop
   @REM start /b steam
+  start /b cmd /c "%SCOOP%\apps\yuque\current\语雀.exe"
 
   @REM 浏览器
   start /b microsoft-edge:
@@ -277,9 +294,12 @@ goto :eof
 
 
 @REM ==================================================================
-@REM 测试
+@REM restart-sharemouse
 @REM ==================================================================
-:test
-  echo Testing...
+:restart-sharemouse
+  taskkill /F /IM sharemouse.exe
+  @REM net stop "ShareMouse Service"
+  @REM net start "ShareMouse Service"
+  start /b cmd /c "C:\Program Files (x86)\ShareMouse\ShareMouse.exe"
 
 goto :eof
