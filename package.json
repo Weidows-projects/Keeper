@@ -11,6 +11,6 @@
     "utils-win": "utils.bat",
     "utils-unix": "sh utils.sh",
     "docker-compose": "cd ./scripts/docker && docker-compose up -d",
-    "docker-compose-test": "cd ./scripts/docker/win && docker compose up -d"
+    "docker-compose-test": "cd ./scripts/docker && docker-compose -f docker-compose-test.yml -p test up"
   }
 }

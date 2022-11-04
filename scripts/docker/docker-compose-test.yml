@@ -1,0 +1,16 @@
+version: "3.1"
+services:
+
+# =================================数据库=================================
+  appsmith:
+    image: index.docker.io/appsmith/appsmith-ce
+    container_name: appsmith
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/appsmith/stacks:/appsmith-stacks
+    restart: unless-stopped
+    # Uncomment the lines below to enable auto-update
+    #labels:
+    #  com.centurylinklabs.watchtower.enable: "true"
