@@ -123,7 +123,6 @@ goto :eof
     call xrepo scan > cpp\xrepo-scan.bak
 
     dir /b "%SCOOP%\persist\vscode-portable-association\data\extensions" > dir\dir-.vscode.bak
-    dir /b "%OneDrive%\Audio\Local\云盘" > dir\dir-music.bak
     dir /b "D:\Game" > dir\dir-software.bak
 
     dir /b "E:\mystream" > game\mystream.bak
@@ -147,16 +146,16 @@ goto :eof
     @REM call pip freeze > python\pip-list.bak
     call pip list --format=freeze > python\pip-list.bak
 
-    call scoop list > scoop\scoop-apps.bak
-    call scoop bucket list > scoop\scoop-buckets.bak
+    call scoop export > scoop\scoop-export.bak
+    @REM call scoop bucket list > scoop\scoop-buckets.bak
     @REM 获取当前文件夹名称
     @REM for /f "delims=" %%i in ("%cd%") do set folder=%%~ni
     @REM 获取每个仓库git地址
-    set currentPath=%cd%
-    for /d %%i in (%SCOOP%\buckets\*) do (
-      cd /d %%i
-      call git remote get-url origin >> %currentPath%\scoop\scoop-buckets.bak
-    )
+    @REM set currentPath=%cd%
+    @REM for /d %%i in (%SCOOP%\buckets\*) do (
+    @REM   cd /d %%i
+    @REM   call git remote get-url origin >> %currentPath%\scoop\scoop-buckets.bak
+    @REM )
     cd /d %currentPath%
     call choco list -l > scoop\choco-list-local.bak
 
@@ -168,7 +167,8 @@ goto :eof
 
     xcopy %windir%\System32\drivers\etc\ hosts\ /e/y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
-    xcopy D:\Documents\PowerShell\Microsoft.PowerShell_profile.ps1 .\PowerShell\ /e/y/d
+    xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
+    xcopy %SCOOP%\persist\pwsh\profile.ps1 .\pwsh\ /e/y/d
     xcopy C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json .\WindowsTerminal\ /e/y/d
 
     cd ..
