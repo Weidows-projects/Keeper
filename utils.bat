@@ -17,6 +17,12 @@
   @REM 有的系统环境变量并没有设置 HOME, 无法直接进入只能手动设置了
   if not defined HOME set HOME=C:\Users\Administrator
 
+  @REM disk-sleep-preventer
+  set DISK_SLEEP_PREVENTER=E:\
+
+
+
+
 
 
 
@@ -42,8 +48,8 @@
   echo        '::::::::::::::..
   echo             ..::::::::::::.
   echo           ``::::::::::::::::
-  echo            ::::``:::::::::'        .:::.
-  echo           ::::'   ':::::'       .::::::::.(7)restart-sharemouse
+  echo            ::::``:::::::::'        .:::. (8)disk-sleep-preventer
+  echo           ::::'   ':::::'       .::::::::.(7)killer
   echo         .::::'    ::::::     .:::::::'::::. (6)dir
   echo        .:::'     :::::::  .:::::::::' ':::::. (5)backup
   echo       .::'       ::::::.:::::::::'      ':::::. (4)daily-helper
@@ -51,7 +57,7 @@
   echo  ...:::          :::::::::::::'              ``::. (2)test / change color
   echo  ````':.          ':::::::::'                  ::::.. (1)exit
   echo 输入选项:           '.:::::'                    ':'```:..
-  CHOICE /C 1234567
+  CHOICE /C 12345678
   echo =============================================================================
 
 
@@ -61,7 +67,8 @@
   if %errorlevel%==4 call :daily-helper
   if %errorlevel%==5 call :backup
   if %errorlevel%==6 call :dir
-  if %errorlevel%==7 call :restart-sharemouse
+  if %errorlevel%==7 call :killer
+  if %errorlevel%==8 call :disk-sleep-preventer
 
 
   @REM 暂停-查看程序输出-自循环; 视 goto 优先级过高只在 main 中用,其他的 只用 call
@@ -78,7 +85,6 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
-
 
 goto :eof
 
@@ -122,15 +128,9 @@ goto :eof
 
     call xrepo scan > cpp\xrepo-scan.bak
 
-    dir /b "%SCOOP%\persist\vscode-portable-association\data\extensions" > dir\dir-.vscode.bak
-    dir /b "D:\Game" > dir\dir-software.bak
-
-    dir /b "E:\mystream" > game\mystream.bak
-    dir /b "E:\mystream\0x" > game\mystream-0x.bak
-    @REM 备份防止重装后,游戏/创意工坊木大
-    xcopy "%SCOOP%\persist\steam\steamapps\libraryfolders.vdf" game\ /y/d
-    xcopy "%SCOOP%\persist\steam\steamapps\workshop\*.acf" game\ /y/d
-    xcopy "E:\mystream\steamapps\workshop\*.acf" game\ /y/d
+    dir /b "D:\mystream" > dir\dir-software.bak
+    dir /b "E:\mystream" > dir\dir-mystream.bak
+    dir /b "G:\mystream" >> dir\dir-mystream.bak
 
     call gh repo list > github\repolist-Weidows.bak
     call gh repo list Weidows-projects > github\repolist-Weidows-projects.bak
@@ -139,14 +139,14 @@ goto :eof
     call go env > golang\go-env.bak
 
     call nvm list > node\nvm.bak
-    call npm list -g --depth=0 > node\npm-global.bak
-    @REM call yarn global list > node\yarn-global.bak
+    call pnpm list -g > node\pnpm-global.bak
 
     call conda env export -n base > python\conda-env-base.yaml
     @REM call pip freeze > python\pip-list.bak
     call pip list --format=freeze > python\pip-list.bak
 
     call scoop export > scoop\scoop-export.bak
+    call choco list -l > scoop\choco-list-local.bak
     @REM call scoop bucket list > scoop\scoop-buckets.bak
     @REM 获取当前文件夹名称
     @REM for /f "delims=" %%i in ("%cd%") do set folder=%%~ni
@@ -156,8 +156,7 @@ goto :eof
     @REM   cd /d %%i
     @REM   call git remote get-url origin >> %currentPath%\scoop\scoop-buckets.bak
     @REM )
-    cd /d %currentPath%
-    call choco list -l > scoop\choco-list-local.bak
+    @REM cd /d %currentPath%
 
     cd ..
 
@@ -208,6 +207,7 @@ goto :eof
   @REM start /b n0vadesktop
   @REM start /b steam
   start /b cmd /c "%SCOOP%\apps\yuque\current\语雀.exe"
+  start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
 
   @REM 浏览器
   start /b microsoft-edge:
@@ -294,12 +294,26 @@ goto :eof
 
 
 @REM ==================================================================
-@REM restart-sharemouse
+@REM killer
 @REM ==================================================================
-:restart-sharemouse
+:killer
   taskkill /F /IM sharemouse.exe
   @REM net stop "ShareMouse Service"
   @REM net start "ShareMouse Service"
   start /b cmd /c "C:\Program Files (x86)\ShareMouse\ShareMouse.exe"
 
+  taskkill /f /im kassistant.exe
 goto :eof
+
+
+
+
+
+
+@REM ==================================================================
+@REM disk-sleep-preventer
+@REM ==================================================================
+:disk-sleep-preventer
+  @REM 延时 30 秒
+  choice /t 30 /d y /n > %DISK_SLEEP_PREVENTER%.disk-sleep-preventer
+  goto :disk-sleep-preventer
