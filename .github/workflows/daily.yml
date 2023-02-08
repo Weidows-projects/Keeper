@@ -168,7 +168,7 @@ jobs:
       - name: AutoMihoyoBBS
         run: |
           if [ 'a${{ secrets.AUTOMIHOYOBBS_CONFIG }}' != 'a' ]; then
-            git clone https://github.com/Womsxd/AutoMihoyoBBS.git
+            git clone https://gitee.com/kalicyh/AutoMihoyoBBS.git
             cd AutoMihoyoBBS
 
             pip install -r ./requirements.txt

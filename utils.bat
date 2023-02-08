@@ -17,9 +17,6 @@
   @REM 有的系统环境变量并没有设置 HOME, 无法直接进入只能手动设置了
   if not defined HOME set HOME=C:\Users\Administrator
 
-  @REM disk-sleep-preventer
-  set DISK_SLEEP_PREVENTER=E:\
-
 
 
 
@@ -48,7 +45,7 @@
   echo        '::::::::::::::..
   echo             ..::::::::::::.
   echo           ``::::::::::::::::
-  echo            ::::``:::::::::'        .:::. (8)disk-sleep-preventer
+  echo            ::::``:::::::::'        .:::. (8)disk-sleep-guard
   echo           ::::'   ':::::'       .::::::::.(7)killer
   echo         .::::'    ::::::     .:::::::'::::. (6)dir
   echo        .:::'     :::::::  .:::::::::' ':::::. (5)backup
@@ -68,7 +65,7 @@
   if %errorlevel%==5 call :backup
   if %errorlevel%==6 call :dir
   if %errorlevel%==7 call :killer
-  if %errorlevel%==8 call :disk-sleep-preventer
+  if %errorlevel%==8 call :disk-sleep-guard
 
 
   @REM 暂停-查看程序输出-自循环; 视 goto 优先级过高只在 main 中用,其他的 只用 call
@@ -145,8 +142,9 @@ goto :eof
     @REM call pip freeze > python\pip-list.bak
     call pip list --format=freeze > python\pip-list.bak
 
-    call scoop export > scoop\scoop-export.bak
+    call scoop export -c > scoop\scoop-export.bak
     call choco list -l > scoop\choco-list-local.bak
+    call winget export -o scoop\winget-export.bak --include-versions --accept-source-agreements
     @REM call scoop bucket list > scoop\scoop-buckets.bak
     @REM 获取当前文件夹名称
     @REM for /f "delims=" %%i in ("%cd%") do set folder=%%~ni
@@ -177,8 +175,6 @@ goto :eof
     mkdir user-config & cd user-config
 
     xcopy %HOME%\.conda\ .conda\ /e/y/d
-    xcopy %HOME%\.config\scoop\ .config\scoop\ /e/y/d
-    xcopy %HOME%\.config\projects.json .config\ /y/d
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
@@ -206,8 +202,7 @@ goto :eof
   @REM start /b Rainmeter
   @REM start /b n0vadesktop
   @REM start /b steam
-  start /b cmd /c "%SCOOP%\apps\yuque\current\语雀.exe"
-  start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
+  @REM start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
 
   @REM 浏览器
   start /b microsoft-edge:
@@ -221,7 +216,8 @@ goto :eof
 
   @REM 工具
   start /b xyplorer.exe
-  start /b MouseInc
+  start /b %SCOOP%\apps\mouseinc\current\MouseInc.exe
+  start /b %SCOOP%\apps\steam\current\steamapps\common\MyDockFinder\Dock_64.exe
 
   @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
   cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR%
@@ -311,9 +307,9 @@ goto :eof
 
 
 @REM ==================================================================
-@REM disk-sleep-preventer
+@REM disk-sleep-guard
 @REM ==================================================================
-:disk-sleep-preventer
-  @REM 延时 30 秒
-  choice /t 30 /d y /n > %DISK_SLEEP_PREVENTER%.disk-sleep-preventer
-  goto :disk-sleep-preventer
+:disk-sleep-guard
+  @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
+  dsg F:
+goto :eof
