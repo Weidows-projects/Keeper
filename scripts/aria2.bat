@@ -13,8 +13,8 @@ set DOWNLOAD_DIR=%2
   if not defined DOWNLOAD_DIR set DOWNLOAD_DIR=D:\Download
 @REM ==================================================================
 
-
 @REM aria2.session
+mkdir -p %BACKUP_DIR%\others\aria2\
 touch %BACKUP_DIR%\others\aria2\aria2.session
 
 @REM 括号内命令的标准输出会重定向到 aria2.conf
@@ -120,10 +120,13 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo # 保存磁力链接元数据为种子文件（.torrent 文件）, 默认:false
   echo bt-save-metadata=true
 )> %BACKUP_DIR%\others\aria2\aria2.conf
-  call curl -s https://trackerslist.com/best_aria2.txt>%BACKUP_DIR%\others\aria2\trackerslist.txt
-  set /p trackerslist=<%BACKUP_DIR%\others\aria2\trackerslist.txt
-  echo bt-tracker=%trackerslist%>>%BACKUP_DIR%\others\aria2\aria2.conf
 
-@REM aria2.vbs
-echo CreateObject("WScript.Shell").Run "aria2c --conf-path=%BACKUP_DIR%\others\aria2\aria2.conf",0 > %BACKUP_DIR%\others\aria2\aria2.vbs
-cscript //Nologo %BACKUP_DIR%\others\aria2\aria2.vbs
+@REM Tracker 服务器地址 https://trackerslist.com/#/zh
+call curl -s https://cdn.staticaly.com/gh/XIU2/TrackersListCollection/master/best_aria2.txt>%BACKUP_DIR%\others\aria2\trackerslist.txt
+
+@REM 不换行追加 https://blog.csdn.net/qq_45534098/article/details/111556785
+>>%BACKUP_DIR%\others\aria2\aria2.conf set /p="trackerslist=" <nul
+type %BACKUP_DIR%\others\aria2\trackerslist.txt >> %BACKUP_DIR%\others\aria2\aria2.conf
+del %BACKUP_DIR%\others\aria2\trackerslist.txt
+
+powershell Start-Process -WindowStyle hidden aria2c.exe --conf-path=%BACKUP_DIR%\others\aria2\aria2.conf

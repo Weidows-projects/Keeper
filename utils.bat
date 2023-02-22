@@ -45,7 +45,7 @@
   echo        '::::::::::::::..
   echo             ..::::::::::::.
   echo           ``::::::::::::::::
-  echo            ::::``:::::::::'        .:::. (8)disk-sleep-guard
+  echo            ::::``:::::::::'        .:::.
   echo           ::::'   ':::::'       .::::::::.(7)killer
   echo         .::::'    ::::::     .:::::::'::::. (6)dir
   echo        .:::'     :::::::  .:::::::::' ':::::. (5)backup
@@ -65,7 +65,6 @@
   if %errorlevel%==5 call :backup
   if %errorlevel%==6 call :dir
   if %errorlevel%==7 call :killer
-  if %errorlevel%==8 call :disk-sleep-guard
 
 
   @REM 暂停-查看程序输出-自循环; 视 goto 优先级过高只在 main 中用,其他的 只用 call
@@ -198,10 +197,13 @@ goto :eof
 @REM 开机启动软件
 @REM ==================================================================
 :boot-starter
+  @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
+  cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR%
+
   @REM 软件
   @REM start /b Rainmeter
   @REM start /b n0vadesktop
-  @REM start /b steam
+  start /b steam
   @REM start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
 
   @REM 浏览器
@@ -210,18 +212,14 @@ goto :eof
   @REM 酷狗
   start /b KuGou.exe
 
-  @REM 通讯
-  @REM start /b qq.exe
-  @REM start /b wechat-mod.exe
-
   @REM 工具
   start /b xyplorer.exe
   start /b %SCOOP%\apps\mouseinc\current\MouseInc.exe
   start /b %SCOOP%\apps\steam\current\steamapps\common\MyDockFinder\Dock_64.exe
 
-  @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
-  cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR%
-
+  @REM 磁盘唤醒
+  @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
+  powershell Start-Process -WindowStyle hidden dsg F:
 goto :eof
 
 
@@ -299,17 +297,4 @@ goto :eof
   start /b cmd /c "C:\Program Files (x86)\ShareMouse\ShareMouse.exe"
 
   taskkill /f /im kassistant.exe
-goto :eof
-
-
-
-
-
-
-@REM ==================================================================
-@REM disk-sleep-guard
-@REM ==================================================================
-:disk-sleep-guard
-  @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
-  dsg F:
 goto :eof
