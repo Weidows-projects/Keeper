@@ -14,7 +14,7 @@ set DOWNLOAD_DIR=%2
 @REM ==================================================================
 
 @REM aria2.session
-mkdir -p %BACKUP_DIR%\others\aria2\
+mkdir %BACKUP_DIR%\others\aria2\ >nul 2>&1
 touch %BACKUP_DIR%\others\aria2\aria2.session
 
 @REM 括号内命令的标准输出会重定向到 aria2.conf

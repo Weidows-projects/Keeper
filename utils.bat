@@ -183,6 +183,7 @@ goto :eof
 
     @REM git-bash 样式
     xcopy %HOME%\.minttyrc . /y/d
+    echo %PATH%> .PATH
 
     cd ..
 

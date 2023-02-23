@@ -39,7 +39,12 @@ class Utils:
     USER_NAME = ""
 
     # 不带 agent 的话会被防火墙拦截: <h1><span>拒绝非浏览器请求</span></h1>
-    AGENT = {'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)'}
+    HEADER = {
+        'User-Agent': 'Apifox/1.0.0 (https://www.apifox.cn)',
+        'Accept': '*/*',
+        'Host': 'www.helloimg.com',
+        'Connection': 'keep-alive'
+    }
 
     LOCK = threading.Lock()
 
@@ -47,51 +52,19 @@ class Utils:
 
     CPU_COUNT = multiprocessing.cpu_count()
 
-    def __sendHttpGetWithHeader(url):
-        try:
-            return requests.get(url, headers=Utils.AGENT)
-        except Exception as e:
-            print(e)
-            return None
-
-    def __sendHttpPostWithHeaders(url):
-        try:
-            return requests.post(url)
-        except Exception as e:
-            print(e)
-            return None
-
     @staticmethod
     def getResponseJson(url, method):
-        if method == "GET":
-            responseData = Utils.__sendHttpGetWithHeader(url)
-        elif method == "POST":
-            responseData = Utils.__sendHttpPostWithHeaders(url)
-        return json.loads(responseData.text)
-
-
-def __init__():
-    argv = sys.argv[1:]
-
-    try:
-        Utils.USER_NAME = argv[0]
-        Utils.BACKUP_PATH = argv[1] + "hello"
-    except IndexError:
-        print("请正确输入参数中: 用户名 备份路径")
-
-    if os.path.exists(Utils.BACKUP_PATH):
-        print("备份文件夹已存在: " + Utils.BACKUP_PATH)
-    else:
-        os.mkdir(Utils.BACKUP_PATH)
-    os.chdir(Utils.BACKUP_PATH)
-
-    Utils.DATAS = Utils.getResponseJson(Utils.BASE_URL + Utils.USER_NAME,
-                                        "GET")
-
-    os.remove("response.json")
-    with open("response.json", 'wb') as f:
-        f.write(json.dumps(Utils.DATAS).encode())
-        f.flush()
+        try:
+            if method == "GET":
+                responseData = requests.get(
+                    url, headers=Utils.HEADER, verify=False)
+            elif method == "POST":
+                responseData = requests.post(
+                    url, headers=Utils.HEADER, verify=False)
+            return json.loads(responseData.text)
+        except Exception as e:
+            print(e)
+            return None
 
 
 def multi_downloader():
@@ -114,7 +87,7 @@ def multi_downloader():
         if not os.path.exists(path):
             if not os.path.exists(date):
                 os.mkdir(date)
-            pic = requests.get(url, headers=Utils.AGENT)
+            pic = requests.get(url, headers=Utils.HEADER)
             with open(path, 'wb') as f:
                 f.write(pic.content)
                 f.flush()
@@ -129,7 +102,35 @@ def multi_downloader():
 
 
 if __name__ == '__main__':
-    __init__()
+    # argv = sys.argv[1:]
+    argv = [
+        "Weidows", "D:/Repos/Weidows-projects/Keeper/Programming-Configuration/backup/"
+    ]
+
+    try:
+        Utils.USER_NAME = argv[0]
+        Utils.BACKUP_PATH = argv[1] + "hello"
+    except IndexError:
+        print("请正确输入参数中: 用户名 备份路径")
+
+    if os.path.exists(Utils.BACKUP_PATH):
+        print("备份文件夹已存在: " + Utils.BACKUP_PATH)
+    else:
+        os.mkdir(Utils.BACKUP_PATH)
+    os.chdir(Utils.BACKUP_PATH)
+
+    Utils.DATAS = Utils.getResponseJson(Utils.BASE_URL + Utils.USER_NAME,
+                                        "GET")
+
+    try:
+        os.remove("response.json")
+    except FileNotFoundError:
+        pass
+
+    with open("response.json", 'wb') as f:
+        f.write(json.dumps(Utils.DATAS).encode())
+        f.flush()
+
     with ThreadPoolExecutor(max_workers=Utils.CPU_COUNT) as executor:
         for i in range(Utils.CPU_COUNT):
             executor.submit(multi_downloader)
