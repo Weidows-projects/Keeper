@@ -4,6 +4,13 @@
 @REM 需要通过参数传递或者手动修改下面设置 BACKUP_DIR 和 DOWNLOAD_DIR
 @REM ==================================================================
 @echo off
+
+@REM 检测是否已运行
+@REM https://blog.csdn.net/yelllowcong/article/details/78424329
+@REM ps |grep aria2 |grep -v "grep" |wc -l
+@REM https://blog.csdn.net/asfuyao/article/details/8931828
+tasklist | find /i "aria2c.exe" && goto :eof
+
 @REM 配置和启动脚本目录 (空的就行)
 set BACKUP_DIR=%1
   if not defined BACKUP_DIR set BACKUP_DIR=.

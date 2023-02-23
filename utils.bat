@@ -220,7 +220,7 @@ goto :eof
 
   @REM 磁盘唤醒
   @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
-  powershell Start-Process -WindowStyle hidden dsg F:
+  tasklist | find /i "dsg.exe" || powershell Start-Process -WindowStyle hidden dsg F:
 goto :eof
 
 

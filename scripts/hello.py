@@ -56,11 +56,10 @@ class Utils:
     def getResponseJson(url, method):
         try:
             if method == "GET":
-                responseData = requests.get(
-                    url, headers=Utils.HEADER, verify=False)
+                # url, headers=Utils.HEADER, verify=False)
+                responseData = requests.get(url, headers=Utils.HEADER)
             elif method == "POST":
-                responseData = requests.post(
-                    url, headers=Utils.HEADER, verify=False)
+                responseData = requests.post(url, headers=Utils.HEADER)
             return json.loads(responseData.text)
         except Exception as e:
             print(e)
@@ -102,10 +101,10 @@ def multi_downloader():
 
 
 if __name__ == '__main__':
-    # argv = sys.argv[1:]
-    argv = [
-        "Weidows", "D:/Repos/Weidows-projects/Keeper/Programming-Configuration/backup/"
-    ]
+    argv = sys.argv[1:]
+    # argv = [
+    #     "Weidows", "D:/Repos/Weidows-projects/Keeper/Programming-Configuration/backup/"
+    # ]
 
     try:
         Utils.USER_NAME = argv[0]
