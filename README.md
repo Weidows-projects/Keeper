@@ -37,7 +37,7 @@
   |   WAKATIME_API_KEY   |                                                                                 waka-box 需要的 wakatime API                                                                                  |
   |       GH_TOKEN       |                                                                       更新 waka-box 需要用带有 Gist 权限的 GitHub TOKEN                                                                       |
 
-![分割线](https://www.helloimg.com/images/2022/07/01/ZM0SoX.png)
+<a>![分割线](https://cdn.jsdelivr.net/gh/Weidows/Weidows/image/divider.png)</a>
 
 # 本机
 
@@ -56,7 +56,7 @@
 
   非 append/overwrite, 不会改变其他 host; [此处 Release 中打包好了 64 位可执行文件](https://github.com/Weidows-projects/scoop-3rd/releases/tag/1.0.0)
 
-![分割线](https://www.helloimg.com/images/2022/07/01/ZM0SoX.png)
+<a>![分割线](https://cdn.jsdelivr.net/gh/Weidows/Weidows/image/divider.png)</a>
 
 # 借物表
 

@@ -114,7 +114,9 @@ goto :eof
     @REM python ..\..\scripts\bitwarden-ssh-agent\bw_add_sshkeys.py -f ssh --session %BW_SESSION%
 
     @REM 备份图床
-    python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
+    @REM python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
+    # 增量备份 https://cloud.tencent.com/developer/ask/sof/34010
+    wget -nc -i images.txt -P ./ImageHub
 
     cd ..
 

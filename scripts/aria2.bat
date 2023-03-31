@@ -126,13 +126,18 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo bt-seed-unverified=true
   echo # 保存磁力链接元数据为种子文件（.torrent 文件）, 默认:false
   echo bt-save-metadata=true
+
+  echo # 使用 UTF-8 处理 Content-Disposition, 默认:false
+  echo content-disposition-default-utf8=true
+  echo # 启用后台进程
+  echo daemon=true
 )> %BACKUP_DIR%\others\aria2\aria2.conf
 
 @REM Tracker 服务器地址 https://trackerslist.com/#/zh
 call curl -s https://cdn.staticaly.com/gh/XIU2/TrackersListCollection/master/best_aria2.txt>%BACKUP_DIR%\others\aria2\trackerslist.txt
 
 @REM 不换行追加 https://blog.csdn.net/qq_45534098/article/details/111556785
->>%BACKUP_DIR%\others\aria2\aria2.conf set /p="trackerslist=" <nul
+>>%BACKUP_DIR%\others\aria2\aria2.conf set /p="bt-tracker=" <nul
 type %BACKUP_DIR%\others\aria2\trackerslist.txt >> %BACKUP_DIR%\others\aria2\aria2.conf
 del %BACKUP_DIR%\others\aria2\trackerslist.txt
 
