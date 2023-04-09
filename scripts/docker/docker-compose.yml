@@ -129,24 +129,24 @@ services:
 
 # =================================应用=================================
   # 需要手动转发 80 端口, 本地跑的所以 443 端口无法访问
-  appsmith:
-    image: index.docker.io/appsmith/appsmith-ce
-    container_name: appsmith
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./data/appsmith/stacks:/appsmith-stacks
-    restart: unless-stopped
-    # Uncomment the lines below to enable auto-update
-    #labels:
-    #  com.centurylinklabs.watchtower.enable: "true"
+  # appsmith:
+  #   image: index.docker.io/appsmith/appsmith-ce
+  #   container_name: appsmith
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./data/appsmith/stacks:/appsmith-stacks
+  #   restart: unless-stopped
+  #   # Uncomment the lines below to enable auto-update
+  #   #labels:
+  #   #  com.centurylinklabs.watchtower.enable: "true"
 
   # 点云标注
-  SUSTechPOINTS:
-    image: juhaoming/sustechpoints:v1.0.0
-    # restart: always
-    ports:
-      - 8081:8081
-    volumes:
-      - ./data/SUSTechPOINTS:/root/SUSTechPOINTS/data
+  # SUSTechPOINTS:
+  #   image: juhaoming/sustechpoints:v1.0.0
+  #   # restart: always
+  #   ports:
+  #     - 8081:8081
+  #   volumes:
+  #     - ./data/SUSTechPOINTS:/root/SUSTechPOINTS/data
