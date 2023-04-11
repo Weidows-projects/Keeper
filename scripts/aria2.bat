@@ -8,7 +8,7 @@
 @REM 检测是否已运行
 @REM https://blog.csdn.net/yelllowcong/article/details/78424329
 @REM ps |grep aria2 |grep -v "grep" |wc -l
-@REM https://blog.csdn.net/asfuyao/article/details/8931828
+@REM https://blog.csdn.net/asfuyao/article/details/8931828 | windows-find 在 powershell 中会提示 "FIND: 参数格式不正确"
 tasklist | find /i "aria2c.exe" && goto :eof
 
 @REM 配置和启动脚本目录 (空的就行)

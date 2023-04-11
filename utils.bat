@@ -139,6 +139,7 @@ goto :eof
     call nvm list > node\nvm.bak
     call pnpm list -g > node\pnpm-global.bak
 
+    call conda env list > python\conda-env-list.bak
     call conda env export -n base > python\conda-env-base.yaml
     @REM call pip freeze > python\pip-list.bak
     call pip list --format=freeze > python\pip-list.bak
@@ -167,6 +168,12 @@ goto :eof
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\pwsh\profile.ps1 .\pwsh\ /e/y/d
+
+    @REM steam 经常遇到游戏本体存在但是不认亲的情况, so backup.
+    xcopy %SCOOP%\persist\steam\steamapps\*.acf .\steam\ /e/y/d
+    xcopy E:\mystream\steamapps\*.acf .\steam\ /e/y/d
+    xcopy G:\mystream\steamapps\*.acf .\steam\ /e/y/d
+
     xcopy C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json .\WindowsTerminal\ /e/y/d
 
     cd ..
@@ -175,7 +182,6 @@ goto :eof
   @REM 备份 ~\
     mkdir user-config & cd user-config
 
-    xcopy %HOME%\.conda\ .conda\ /e/y/d
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
@@ -201,7 +207,7 @@ goto :eof
 @REM ==================================================================
 :boot-starter
   @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
-  cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR%
+  cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR% E:\Download
 
   @REM 软件
   @REM start /b Rainmeter
