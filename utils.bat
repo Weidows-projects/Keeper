@@ -46,10 +46,10 @@
   echo             ..::::::::::::.
   echo           ``::::::::::::::::
   echo            ::::``:::::::::'        .:::.
-  echo           ::::'   ':::::'       .::::::::.(7)killer
+  echo           ::::'   ':::::'       .::::::::.(7)
   echo         .::::'    ::::::     .:::::::'::::. (6)dir
   echo        .:::'     :::::::  .:::::::::' ':::::. (5)backup
-  echo       .::'       ::::::.:::::::::'      ':::::. (4)daily-helper
+  echo       .::'       ::::::.:::::::::'      ':::::. (4)new-bing
   echo      .::'        :::::::::::::::'         ``::::. (3)boot-starter
   echo  ...:::          :::::::::::::'              ``::. (2)test / change color
   echo  ````':.          ':::::::::'                  ::::.. (1)exit
@@ -61,10 +61,9 @@
   if %errorlevel%==1 exit
   if %errorlevel%==2 call :test
   if %errorlevel%==3 call :boot-starter
-  if %errorlevel%==4 call :daily-helper
+  if %errorlevel%==4 call :new-bing
   if %errorlevel%==5 call :backup
   if %errorlevel%==6 call :dir
-  if %errorlevel%==7 call :killer
 
 
   @REM 暂停-查看程序输出-自循环; 视 goto 优先级过高只在 main 中用,其他的 只用 call
@@ -114,9 +113,11 @@ goto :eof
     @REM python ..\..\scripts\bitwarden-ssh-agent\bw_add_sshkeys.py -f ssh --session %BW_SESSION%
 
     @REM 备份图床
-    @REM python %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
-    # 增量备份 https://cloud.tencent.com/developer/ask/sof/34010
-    wget -nc -i images.txt -P ./ImageHub
+    @REM ImageHub 备份
+    @REM wget -nc -i images.txt -P ./ImageHub
+    @REM # 增量备份 https://cloud.tencent.com/developer/ask/sof/34010
+
+    %~dp0.venv\Scripts\python.exe %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
 
     cd ..
 
@@ -164,17 +165,18 @@ goto :eof
   @REM 备份其他
     mkdir others & cd others
 
-    xcopy %windir%\System32\drivers\etc\ hosts\ /e/y/d
+    xcopy %SCOOP%\persist\Clash-for-Windows_Chinese\data\cfw-settings.yaml clash\ /e/y/d
+    xcopy %windir%\System32\drivers\etc\ hosts\ /y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\pwsh\profile.ps1 .\pwsh\ /e/y/d
 
     @REM steam 经常遇到游戏本体存在但是不认亲的情况, so backup.
-    xcopy %SCOOP%\persist\steam\steamapps\*.acf .\steam\ /e/y/d
-    xcopy E:\mystream\steamapps\*.acf .\steam\ /e/y/d
-    xcopy G:\mystream\steamapps\*.acf .\steam\ /e/y/d
+    xcopy %SCOOP%\persist\steam\steamapps\*.acf .\steam\ /y/d
+    xcopy E:\mystream\steamapps\*.acf .\steam\ /y/d
+    xcopy G:\mystream\steamapps\*.acf .\steam\ /y/d
 
-    xcopy C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json .\WindowsTerminal\ /e/y/d
+    xcopy "C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json" .\WindowsTerminal\ /e/y/d
 
     cd ..
 
@@ -204,42 +206,26 @@ goto :eof
 
 @REM ==================================================================
 @REM 开机启动软件
+@REM 很多程序通过 start /b 会占用当前shell, 可以改用 powershell
 @REM ==================================================================
 :boot-starter
+  @REM 磁盘唤醒 (deprecated) -> clash 子进程
+  @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
+  @REM tasklist | find /i "dsg.exe" || powershell Start-Process -WindowStyle hidden dsg F:
+
+  @REM start /b microsoft-edge:
+  @REM start /b Rainmeter
+  @REM start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
+
+  tasklist | find /i "n0vadesktop.exe" || powershell Start-Process -WindowStyle hidden n0vadesktop.exe
+  tasklist | find /i "xyplorer.exe" || powershell Start-Process -WindowStyle hidden xyplorer.exe
+  tasklist | find /i "KuGou.exe" || powershell Start-Process -WindowStyle hidden KuGou.exe
+  tasklist | find /i "steam.exe" || powershell Start-Process -WindowStyle hidden steam.exe
+
   @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
   cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR% E:\Download
 
-  @REM 软件
-  @REM start /b Rainmeter
-  @REM start /b n0vadesktop
-  start /b steam
-  @REM start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
 
-  @REM 浏览器
-  start /b microsoft-edge:
-
-  @REM 酷狗
-  start /b KuGou.exe
-
-  @REM 工具
-  start /b xyplorer.exe
-  start /b %SCOOP%\apps\mouseinc\current\MouseInc.exe
-  start /b %SCOOP%\apps\steam\current\steamapps\common\MyDockFinder\Dock_64.exe
-
-  @REM 磁盘唤醒
-  @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
-  tasklist | find /i "dsg.exe" || powershell Start-Process -WindowStyle hidden dsg F:
-goto :eof
-
-
-
-
-
-
-@REM ==================================================================
-@REM Daily: scoop-update / Bilibili
-@REM ==================================================================
-:daily-helper
   @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
   cd /d %BACKUP_DIR%\backup
 
@@ -257,7 +243,7 @@ goto :eof
     echo =====================================================================>> %logFile%
 
   @REM https://github.com/521xueweihan/GitHub520
-    cmd /c %~dp0scripts\GitHub520\GitHub520.bat | tee -a %logFile%
+    @REM cmd /c %~dp0scripts\GitHub520\GitHub520.bat | tee -a %logFile%
 
   @REM scoop-update
     call scoop update | tee -a %logFile%
@@ -274,6 +260,10 @@ goto :eof
     call java -jar BILIBILI-HELPER.jar | tee -a %logFile%
     cd ..
     rd /S/Q D:\tmp
+
+  @REM biliup
+    @REM cd /d G:\Videos\录播\biliup
+    @REM biliup --config ./config.toml --http start
 goto :eof
 
 
@@ -282,13 +272,15 @@ goto :eof
 
 
 @REM ==================================================================
-@REM 批量获取文件名
+@REM NewBiing AI
 @REM ==================================================================
-:dir
-  set /p specifiedPath=输入路径 (留空取当前路径):
-  echo.
-  DIR /B %specifiedPath%
-  echo.
+:new-bing
+  @REM set /p specifiedPath=输入路径 (留空取当前路径):
+  @REM echo.
+  @REM DIR /B %specifiedPath%
+
+  cd /d D:\Repos\tools\BingAI-Client
+  venv\Scripts\python.exe .\BingServer.py
 goto :eof
 
 

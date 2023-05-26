@@ -23,7 +23,6 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 import sys
-from isort import Config
 import requests
 import threading
 import multiprocessing

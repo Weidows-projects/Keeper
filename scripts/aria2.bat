@@ -45,6 +45,8 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo.
   echo ## 下载连接相关 ##
   echo.
+  echo # 代理服务器
+  echo all-proxy=http://127.0.0.1:7890/
   echo # 最大同时下载任务数, 运行时可修改, 默认:5
   echo max-concurrent-downloads=5
   echo # 同一服务器连接数, 添加时可指定, 默认:1

@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Programming-Configuration" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/scripts/bitwarden-ssh-agent" vcs="Git" />
   </component>
 </project>
