@@ -225,7 +225,6 @@ goto :eof
   @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
   cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR% E:\Download
 
-
   @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
   cd /d %BACKUP_DIR%\backup
 
@@ -256,10 +255,10 @@ goto :eof
     @REM call python AutoMihoyoBBS/main.py
 
   @REM bilibili
-    cd BILIBILI-HELPER
-    call java -jar BILIBILI-HELPER.jar | tee -a %logFile%
-    cd ..
-    rd /S/Q D:\tmp
+    @REM cd BILIBILI-HELPER
+    @REM call java -jar BILIBILI-HELPER.jar | tee -a %logFile%
+    @REM cd ..
+    @REM rd /S/Q D:\tmp
 
   @REM biliup
     @REM cd /d G:\Videos\录播\biliup
