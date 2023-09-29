@@ -8,11 +8,7 @@ jobs:
   test-1:
     name: test-1
     runs-on: ubuntu-latest
-    # env:
-    #   GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
-      - name: Clone repository
-        uses: actions/checkout@v3
-        # with:
-          # repository: ''
+      - name: Debugging with ssh
+        uses: lhotari/action-upterm@v1

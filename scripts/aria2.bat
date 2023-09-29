@@ -25,6 +25,7 @@ mkdir %BACKUP_DIR%\others\aria2\ >nul 2>&1
 touch %BACKUP_DIR%\others\aria2\aria2.session
 
 @REM 括号内命令的标准输出会重定向到 aria2.conf
+@REM https://aria2.github.io/manual/en/html/aria2c.html
 (
   echo ## # 开头为注释内容, 选项都有相应的注释说明, 根据需要修改 ##
   echo ## 被注释的选项填写的是默认值, 建议在需要修改时再取消注释  ##
@@ -39,14 +40,14 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo # 预分配所需时间: none 《 falloc ? trunc 《 prealloc
   echo # falloc 和 trunc 则需要文件系统和内核支持
   echo # NTFS 建议使用 falloc, EXT3/4 建议 trunc, MAC 下需要注释此项
-  echo file-allocation=none
+  echo file-allocation=falloc
   echo # 断点续传
   echo continue=true
   echo.
   echo ## 下载连接相关 ##
   echo.
   echo # 代理服务器
-  echo all-proxy=http://127.0.0.1:7890/
+  echo all-proxy=http://127.0.0.1:7890
   echo # 最大同时下载任务数, 运行时可修改, 默认:5
   echo max-concurrent-downloads=5
   echo # 同一服务器连接数, 添加时可指定, 默认:1
@@ -66,6 +67,9 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo #max-upload-limit=0
   echo # 禁用 IPv6, 默认:false
   echo # disable-ipv6=true
+  echo # 防止出现CA版本低导致的下载失败
+  echo # aria2 SSL/TLS handshake failure: unable to get local issuer certificate https://github.com/aria2/aria2/issues/1636
+  echo check-certificate=false
   echo.
   echo ## 进度保存相关 ##
   echo.
@@ -103,9 +107,9 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo # 单个种子最大连接数, 默认:55
   echo #bt-max-peers=55
   echo # 打开 DHT 功能, PT 需要禁用, 默认:true
-  echo enable-dht=false
+  echo enable-dht=true
   echo # 打开 IPv6 DHT 功能, PT 需要禁用
-  echo #enable-dht6=false
+  echo #enable-dht6=true
   echo # DHT 网络监听端口, 默认:6881-6999
   echo #dht-listen-port=6881-6999
   echo # 本地节点查找, PT 需要禁用, 默认:false
@@ -118,7 +122,7 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo peer-id-prefix=-TR2770-
   echo user-agent=Transmission/2.77
   echo # 当种子的分享率达到这个数时, 自动停止做种, 0 为一直做种, 默认:1.0
-  echo seed-ratio=0
+  echo seed-ratio=1.0
   echo # 强制保存会话, 即使任务已经完成, 默认:false
   echo # 较新的版本开启后会在任务完成后依然保留.aria2 文件
   echo #force-save=false
@@ -133,6 +137,8 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
   echo content-disposition-default-utf8=true
   echo # 启用后台进程
   echo daemon=true
+  echo user-agent=LogStatistic
+  echo check-certificate=false
 )> %BACKUP_DIR%\others\aria2\aria2.conf
 
 @REM Tracker 服务器地址 https://trackerslist.com/#/zh
@@ -143,4 +149,5 @@ call curl -s https://cdn.staticaly.com/gh/XIU2/TrackersListCollection/master/bes
 type %BACKUP_DIR%\others\aria2\trackerslist.txt >> %BACKUP_DIR%\others\aria2\aria2.conf
 del %BACKUP_DIR%\others\aria2\trackerslist.txt
 
+@REM https://learn.microsoft.com/zh-cn/powershell/module/microsoft.powershell.management/start-process?view=powershell-7.3
 powershell Start-Process -WindowStyle hidden aria2c.exe --conf-path=%BACKUP_DIR%\others\aria2\aria2.conf

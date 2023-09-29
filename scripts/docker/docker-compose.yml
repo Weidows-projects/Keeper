@@ -1,10 +1,10 @@
-version: "3.1"
+version: "3.3"
 services:
 
 # =================================数据库=================================
   redis: # 无密码
     image: redis:latest
-    restart: always
+    restart: unless-stopped
     container_name: "redis-app"
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
@@ -16,7 +16,7 @@ services:
 
   mongo: # root-2333
     image: mongo:latest
-    restart: always
+    restart: unless-stopped
     container_name: "mongo-app"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -28,7 +28,7 @@ services:
 
   mariadb: # root-2333
     image: mariadb:latest
-    restart: always
+    restart: unless-stopped
     container_name: "mariadb-app"
     ports:
       # 端口映射
@@ -104,16 +104,16 @@ services:
     # always，在容器退出时总是重启容器
     # unless-stopped，在容器退出时总是重启容器，但是不考虑在Docker守护进程启动时就已经停止了的容器
 
-  portainer:
-    #image: portainer/portainer  # 官方版
-    image: 6053537/portainer  # 汉化版
-    container_name: portainer
-    restart: always
-    ports:
-      - 9090:9000
-    volumes:
-      - ./data/portainer:/data/portainer
-      - /var/run/docker.sock:/var/run/docker.sock
+  # portainer:
+  #   #image: portainer/portainer  # 官方版
+  #   image: 6053537/portainer  # 汉化版
+  #   container_name: portainer
+  #   restart: unless-stopped
+  #   ports:
+  #     - 9090:9000
+  #   volumes:
+  #     - ./data/portainer:/data/portainer
+  #     - /var/run/docker.sock:/var/run/docker.sock
 
   auto_update:
    image: containrrr/watchtower:latest-dev
@@ -122,8 +122,8 @@ services:
    # Update check interval in seconds.
    command: --schedule "0 0 * ? * *" --label-enable --cleanup
    restart: unless-stopped
-   depends_on:
-     - appsmith
+  #  depends_on:
+  #    - appsmith
    environment:
      - WATCHTOWER_LIFECYCLE_HOOKS=true
 
@@ -150,3 +150,8 @@ services:
   #     - 8081:8081
   #   volumes:
   #     - ./data/SUSTechPOINTS:/root/SUSTechPOINTS/data
+
+# volumes:
+#   example-volume:
+      # 需要手动创建, 没有的话报错
+#     external: true

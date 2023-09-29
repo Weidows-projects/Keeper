@@ -7,9 +7,18 @@ on:
   # 东八区每天八点多运行
   schedule:
     - cron: "0 0 * * *"
+
   # 标星时运行
   # watch:
   #   types: [started]
+
+  workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        required: false
+        default: false
 
 jobs:
   autogreen:
@@ -38,6 +47,7 @@ jobs:
           fi
           git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
+          # https://github.com/mouday/wallpaper-database
           # 获取必应壁纸
           cd ./Bing && php index.php && cd ..
 
@@ -189,3 +199,15 @@ jobs:
 
             python main.py >/dev/null
           fi
+
+  # https://github.com/mxschmitt/action-tmate
+  ssh-debug:
+    runs-on: ubuntu-latest
+    steps:
+      # Enable tmate debugging of manually-triggered workflows if the input option was provided
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        timeout-minutes: 15
+        with:
+          limit-access-to-actor: true

@@ -60,7 +60,7 @@
 
   if %errorlevel%==1 exit
   if %errorlevel%==2 call :test
-  if %errorlevel%==3 call :boot-starter
+  if %errorlevel%==3 cmd /c %~dp0scripts\booter.bat %BACKUP_DIR%
   if %errorlevel%==4 call :new-bing
   if %errorlevel%==5 call :backup
   if %errorlevel%==6 call :dir
@@ -153,7 +153,7 @@ goto :eof
     @REM for /f "delims=" %%i in ("%cd%") do set folder=%%~ni
     @REM 获取每个仓库git地址
     @REM set currentPath=%cd%
-    @REM for /d %%i in (%SCOOP%\buckets\*) do (
+
     @REM   cd /d %%i
     @REM   call git remote get-url origin >> %currentPath%\scoop\scoop-buckets.bak
     @REM )
@@ -165,7 +165,7 @@ goto :eof
   @REM 备份其他
     mkdir others & cd others
 
-    xcopy %SCOOP%\persist\Clash-for-Windows_Chinese\data\cfw-settings.yaml clash\ /e/y/d
+    clash\ /e/y/d
     xcopy %windir%\System32\drivers\etc\ hosts\ /y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
@@ -201,69 +201,6 @@ goto :eof
 
 
 
-
-
-
-@REM ==================================================================
-@REM 开机启动软件
-@REM 很多程序通过 start /b 会占用当前shell, 可以改用 powershell
-@REM ==================================================================
-:boot-starter
-  @REM 磁盘唤醒 (deprecated) -> clash 子进程
-  @REM cmd /c %~dp0scripts\disk-sleep-guard.bat D:\
-  @REM tasklist | find /i "dsg.exe" || powershell Start-Process -WindowStyle hidden dsg F:
-
-  @REM start /b microsoft-edge:
-  @REM start /b Rainmeter
-  @REM start /b cmd /c "D:\mystream\kingsoft\kingsoft antivirus\app\assistant\kassistant.exe" -preload -from-smallfloatwininit -role_show=1
-
-  tasklist | find /i "n0vadesktop.exe" || powershell Start-Process -WindowStyle hidden n0vadesktop.exe
-  tasklist | find /i "xyplorer.exe" || powershell Start-Process -WindowStyle hidden xyplorer.exe
-  tasklist | find /i "KuGou.exe" || powershell Start-Process -WindowStyle hidden KuGou.exe
-  tasklist | find /i "steam.exe" || powershell Start-Process -WindowStyle hidden steam.exe
-
-  @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
-  cmd /c %~dp0scripts\aria2.bat %BACKUP_DIR% E:\Download
-
-  @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
-  cd /d %BACKUP_DIR%\backup
-
-  @REM logger
-    @REM 2022-04-24
-    echo %date:~3,14%| sed -e 's/\//-/g' > log\last-run.txt
-    set /p logFile=<log\last-run.txt
-    time /T >> log\last-run.txt
-
-    @REM 2022-04-24.log
-    set logFile=%BACKUP_DIR%\backup\log\tasks\%logFile%.log
-
-    for /l %%i in (1 1 5) do echo.>> %logFile%
-    time /T >> %logFile%
-    echo =====================================================================>> %logFile%
-
-  @REM https://github.com/521xueweihan/GitHub520
-    @REM cmd /c %~dp0scripts\GitHub520\GitHub520.bat | tee -a %logFile%
-
-  @REM scoop-update
-    call scoop update | tee -a %logFile%
-
-  @REM dailycheckin (cmd会由于Unicode报错)
-    @REM call conda activate base
-    @REM start powershell dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
-
-  @REM 米游社
-    @REM call python AutoMihoyoBBS/main.py
-
-  @REM bilibili
-    @REM cd BILIBILI-HELPER
-    @REM call java -jar BILIBILI-HELPER.jar | tee -a %logFile%
-    @REM cd ..
-    @REM rd /S/Q D:\tmp
-
-  @REM biliup
-    @REM cd /d G:\Videos\录播\biliup
-    @REM biliup --config ./config.toml --http start
-goto :eof
 
 
 

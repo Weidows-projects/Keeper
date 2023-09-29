@@ -3,7 +3,7 @@
 Author: Weidows
 Date: 2022-03-30 15:58:40
 LastEditors: Weidows
-LastEditTime: 2022-11-03 12:29:01
+LastEditTime: 2023-07-14 01:04:15
 FilePath: \Keeper\scripts\hello.py
 Description:          Hello 图床多线程增量备份脚本
 
@@ -94,7 +94,7 @@ def multi_downloader():
 
         Utils.LOCK.acquire()
         print(
-            f"{path} is_exists:{is_exists} {threading.currentThread().name} backuped"
+            f"{path} is_exists:{is_exists} {threading.current_thread().name} backuped"
         )
         Utils.LOCK.release()
 
