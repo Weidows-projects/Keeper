@@ -11,7 +11,7 @@
     "utils-win": "utils.bat",
     "convert-utils-win": "sh scripts/convert-utils-win.sh",
     "utils-unix": "sh utils.sh",
-    "docker-compose": "cd ./scripts/docker && docker-compose up -d",
-    "docker-compose-test": "cd ./scripts/docker && docker-compose -f docker-compose-test.yml -p test up"
+    "docker-compose": "cd ./scripts/docker && wsl docker-compose up -d",
+    "docker-compose-test": "cd ./scripts/docker && wsl docker-compose -f docker-compose-test.yml -p test up"
   }
 }

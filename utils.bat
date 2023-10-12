@@ -7,7 +7,7 @@
   chcp 65001
 
   @REM 设置代理, 不然 hello 图床无法访问报错.
-  set http_proxy=http://127.0.0.1:7890 & set https_proxy=http://127.0.0.1:7890
+  @REM set http_proxy=http://127.0.0.1:7890 & set https_proxy=http://127.0.0.1:7890
 
   @REM !!!!一定要注意等号'='前后不要加空格!!!!
   @REM 备份默认存放在keeper内的 Programming-Configuration, 路径支持含空格
@@ -168,7 +168,6 @@ goto :eof
     clash\ /e/y/d
     xcopy %windir%\System32\drivers\etc\ hosts\ /y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
-    xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\pwsh\profile.ps1 .\pwsh\ /e/y/d
 
     @REM steam 经常遇到游戏本体存在但是不认亲的情况, so backup.
@@ -187,6 +186,7 @@ goto :eof
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
+    xcopy %HOME%\.wslconfig . /y/d
     xcopy %HOME%\.yrmrc . /y/d
     xcopy %HOME%\.condarc . /y/d
     xcopy %HOME%\.gitconfig . /y/d

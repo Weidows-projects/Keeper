@@ -1,4 +1,9 @@
 version: "3.3"
+# volumes:
+#   example-volume:
+      # 需要手动创建, 没有的话报错
+#     external: true
+
 services:
 
 # =================================数据库=================================
@@ -151,7 +156,17 @@ services:
   #   volumes:
   #     - ./data/SUSTechPOINTS:/root/SUSTechPOINTS/data
 
-# volumes:
-#   example-volume:
-      # 需要手动创建, 没有的话报错
-#     external: true
+  # 跑不起来
+  # docker-osx:
+  #   devices:
+  #     - /dev/kvm
+  #   ports:
+  #     - "50922:10022"
+  #   volumes:
+  #     - "/tmp/.X11-unix:/tmp/.X11-unix"
+  #   environment:
+  #     - DISPLAY=${DISPLAY:-:0.0}
+  #     - GENERATE_UNIQUE=true
+  #     - "MASTER_PLIST_URL=https://raw.githubusercontent.com/sickcodes/osx-serial-generator/master/config-custom.plist"
+  #   image: "sickcodes/docker-osx:latest"
+  #   restart: unless-stopped

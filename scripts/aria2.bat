@@ -142,7 +142,7 @@ touch %BACKUP_DIR%\others\aria2\aria2.session
 )> %BACKUP_DIR%\others\aria2\aria2.conf
 
 @REM Tracker 服务器地址 https://trackerslist.com/#/zh
-call curl -s https://cdn.staticaly.com/gh/XIU2/TrackersListCollection/master/best_aria2.txt>%BACKUP_DIR%\others\aria2\trackerslist.txt
+call curl -s https://gitea.com/XIU2/TrackersListCollection/raw/branch/master/all_aria2.txt>%BACKUP_DIR%\others\aria2\trackerslist.txt
 
 @REM 不换行追加 https://blog.csdn.net/qq_45534098/article/details/111556785
 >>%BACKUP_DIR%\others\aria2\aria2.conf set /p="bt-tracker=" <nul

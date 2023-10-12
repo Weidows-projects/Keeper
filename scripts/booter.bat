@@ -8,37 +8,41 @@
 set BACKUP_DIR=%1
   if not defined BACKUP_DIR set BACKUP_DIR=%~dp0..\Programming-Configuration
 
+@REM 服务
+@REM sudo net start "Winmgmt"
+
 cd /d %appdata%\Microsoft\Windows\Start Menu\Programs\Scoop Apps
 
 @REM CPU 密集型
-  tasklist | find /i "ShareX_Launcher.exe" || start steam://run/400040
-  tasklist | find /i "Dock_64.exe" || start steam://run/1787090
+  tasklist | find /i "Steam++.exe" || powershell Start-Process "Steam++"
+  tasklist | find /i "bLend.exe" || powershell Start-Process "盘姬工具箱\bLend"
   @REM tasklist | find /i "RunCat.exe" || powershell Start-Process -WindowStyle hidden "RunCat"
   @REM tasklist | find /i "windhawk.exe" || powershell Start-Process -WindowStyle hidden "Windhawk"
   tasklist | find /i "keysound3.0.exe" || powershell Start-Process "KeySound"
   @REM tasklist | find /i "memreduct.exe" || powershell Start-Process -WindowStyle hidden "memreduct.exe"
   tasklist | find /i "rainmeter.exe" || powershell Start-Process -WindowStyle hidden "rainmeter.exe"
-
   @REM 磁盘唤醒 (deprecated) -> clash 子进程
   @REM cmd /c %~dp0disk-sleep-guard.bat D:\
   tasklist | find /i "dsg.exe" || powershell Start-Process -WindowStyle hidden dsg F:
   @REM 这里不要用 start, 虽然能跑起来, 但可能会出现某些未知异常
-  cmd /c %~dp0aria2.bat %BACKUP_DIR% E:\Download
+  @REM cmd /c %~dp0aria2.bat %BACKUP_DIR% E:\Download
+  @REM tasklist | find /i "AudioRelay.exe" || powershell Start-Process -WindowStyle hidden "D:\mystream\AudioRelay\AudioRelay.exe"
 
 echo "Next to open other softs, or just close the window."
-pause
+@REM https://blog.miniasp.com/post/2009/06/24/Sleep-command-in-Batch
+timeout /t 10
+  tasklist | find /i "ShareX.exe" || start steam://run/400040
+  tasklist | find /i "xyplorer.exe" || powershell Start-Process -WindowStyle hidden "xyplorer.exe"
+  tasklist | find /i "Dock_64.exe" || start steam://run/1787090
+  tasklist | find /i "KuGou.exe" || powershell Start-Process -WindowStyle hidden "kugou.exe"
+  tasklist | find /i "VPet" || start steam://run/1920960
+  tasklist | find /i "WeChat.exe" || powershell Start-Process -WindowStyle hidden "WeChat"
   @REM start /b microsoft-edge:
   @REM tasklist | find /i "n0vadesktop.exe" || powershell Start-Process -WindowStyle hidden "n0vadesktop"
-  tasklist | find /i "xyplorer.exe" || powershell Start-Process -WindowStyle hidden "xyplorer.exe"
-  tasklist | find /i "Foxmail.exe" || powershell Start-Process -WindowStyle hidden "Foxmail"
-  tasklist | find /i "KuGou.exe" || powershell Start-Process -WindowStyle hidden "kugou.exe"
-  tasklist | find /i "WXWork.exe" || powershell Start-Process -WindowStyle hidden '企业微信'
-  tasklist | find /i "WeChat.exe" || powershell Start-Process -WindowStyle hidden "WeChat"
-  tasklist | find /i "Lark.exe" || powershell Start-Process -WindowStyle hidden "Lark"
+  @REM tasklist | find /i "Foxmail.exe" || powershell Start-Process -WindowStyle hidden "Foxmail"
+  @REM tasklist | find /i "WXWork.exe" || powershell Start-Process -WindowStyle hidden '企业微信'
+  @REM tasklist | find /i "Lark.exe" || powershell Start-Process -WindowStyle hidden "Lark"
   @REM tasklist | find /i "qq.exe" || powershell Start-Process -WindowStyle hidden "QQ-NT"
-  @REM 虚拟桌宠模拟器
-  start steam://run/1920960
-  tasklist | find /i "AudioRelay.exe" || powershell Start-Process -WindowStyle hidden "D:\mystream\AudioRelay\AudioRelay.exe"
 
 @REM %~dp0 为脚本所在路径; %cd% 类似 pwd,当前路径
 cd /d %BACKUP_DIR%\backup

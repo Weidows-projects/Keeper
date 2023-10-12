@@ -21,29 +21,3 @@ services:
   #     - "9123:9123"
   #     - "9991:9991"
   #   restart: unless-stopped
-
-  # osx-monterey:
-  #   image: sickcodes/docker-osx:monterey
-  #   devices:
-  #     - /dev/kvm
-  #   ports:
-  #     - "50922:10022"
-  #   volumes:
-  #     - "/tmp/.X11-unix:/tmp/.X11-unix"
-  #   environment:
-  #     - "DISPLAY=${DISPLAY:-:0.0}"
-  #     - GENERATE_UNIQUE=true
-  #     - "MASTER_PLIST_URL=https://raw.githubusercontent.com/sickcodes/osx-serial-generator/master/config-custom.plist"
-
-  # osx-ventura:
-  #   image: sickcodes/docker-osx:ventura
-  #   devices:
-  #     - /dev/kvm
-  #   ports:
-  #     - "50922:10022"
-  #   volumes:
-  #     - "/tmp/.X11-unix:/tmp/.X11-unix"
-  #   environment:
-  #     - "DISPLAY=${DISPLAY:-:0.0}"
-  #     - GENERATE_UNIQUE=true
-  #     - "MASTER_PLIST_URL=https://raw.githubusercontent.com/sickcodes/osx-serial-generator/master/config-custom.plist"
