@@ -9,17 +9,15 @@ chcp 65001
 
 @REM 手动
 @REM sudo sc config 服务名 start= demand
-
+sudo sc config "VMAuthdService" start= demand
+sudo sc config "VMnetDHCP" start= demand
+sudo sc config "VMware NAT Service" start= demand
+sudo sc config "VMUSBArbService" start= demand
+sudo sc config "VmwareAutostartService" start= demand
 
 
 @REM 禁用 (不会停止)
 @REM sudo sc config 服务名 start= disabled
-sudo sc config "VMAuthdService" start= disabled
-sudo sc config "VMnetDHCP" start= disabled
-sudo sc config "VMware NAT Service" start= disabled
-sudo sc config "VMUSBArbService" start= disabled
-sudo sc config "VmwareAutostartService" start= disabled
-
 sudo sc config "AsusAppService" start= disabled
 sudo sc config "LightingService" start= disabled
 sudo sc config "ASUSLinkNear" start= disabled
@@ -66,5 +64,3 @@ sudo net stop "Winmgmt"
 
 @REM 启动
 @REM sudo net start "Winmgmt"
-
-pause

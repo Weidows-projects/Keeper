@@ -80,6 +80,8 @@ goto :eof
 @REM ==================================================================
 :test
   echo Testing...
+  @REM call nvm list
+
 
 goto :eof
 
@@ -110,14 +112,12 @@ goto :eof
     @REM 备份 bw; 文档: https://help.bitwarden.ltd/getting-started/bitwarden-cli
     set /p BW_SESSION=<bitwarden\session
     bw list items --session %BW_SESSION% >bitwarden\items.json
-    @REM python ..\..\scripts\bitwarden-ssh-agent\bw_add_sshkeys.py -f ssh --session %BW_SESSION%
 
     @REM 备份图床
     @REM ImageHub 备份
     @REM wget -nc -i images.txt -P ./ImageHub
     @REM # 增量备份 https://cloud.tencent.com/developer/ask/sof/34010
-
-    %~dp0.venv\Scripts\python.exe %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
+    @REM %~dp0.venv\Scripts\python.exe %~dp0scripts\hello.py "Weidows" %BACKUP_DIR%\backup\
 
     cd ..
 
@@ -136,9 +136,10 @@ goto :eof
 
     dir /b "%GOPATH%\bin" > golang\go-install.bak
     call go env > golang\go-env.bak
+    call gvm ls > golang\gvm-ls.bak
 
-    call nvm list > node\nvm.bak
     call pnpm list -g > node\pnpm-global.bak
+    call yarn global list > node\yarn-global.bak
 
     call conda env list > python\conda-env-list.bak
     call conda env export -n base > python\conda-env-base.yaml
@@ -165,7 +166,7 @@ goto :eof
   @REM 备份其他
     mkdir others & cd others
 
-    clash\ /e/y/d
+    xcopy %SCOOP%\persist\Clash-for-Windows_Chinese\data\cfw-settings.yaml clash\ /e/y/d
     xcopy %windir%\System32\drivers\etc\ hosts\ /y/d
     xcopy %SCOOP%\persist\maven\conf\settings.xml maven\conf\ /e/y/d
     xcopy %SCOOP%\persist\pwsh\profile.ps1 .\pwsh\ /e/y/d

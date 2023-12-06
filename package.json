@@ -12,6 +12,9 @@
     "convert-utils-win": "sh scripts/convert-utils-win.sh",
     "utils-unix": "sh utils.sh",
     "docker-compose": "cd ./scripts/docker && wsl docker-compose up -d",
-    "docker-compose-test": "cd ./scripts/docker && wsl docker-compose -f docker-compose-test.yml -p test up"
+    "docker-compose-test": "cd ./scripts/docker && wsl docker-compose -f docker-compose-test.yml -p test up",
+    "docker-weidows-test": "cd ./scripts/docker && wsl docker build -t weidows-test:v1 .",
+    "Windows-service-manager": "cmd /c scripts\\Windows-service-manager.bat",
+    "bw-unlock": "bw unlock"
   }
 }
