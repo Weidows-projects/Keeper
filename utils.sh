@@ -3,8 +3,8 @@
  # @Author: Weidows
  # @Date: 2022-08-12 18:53:31
  # @LastEditors: Weidows
- # @LastEditTime: 2022-09-19 16:26:12
- # @FilePath: /Keeper/utils.sh
+ # @LastEditTime: 2023-12-20 23:08:59
+ # @FilePath: \Blog-privated:\Repos\Weidows-projects\Keeper\utils.sh
  # @Description:
  #    此文件换行符需要用LF, CRLF是Windows下的
  #    TODO 迁移 bat 到 sh
@@ -42,7 +42,7 @@ backup (){
     mkdir lists & cd lists || exit
 
     # Homebrew
-    brew list > scoop/brew-list.bak
+    brew list > pkgs/brew-list.bak
 
     cd ..
 
@@ -56,7 +56,7 @@ backup (){
 
 
   # ~/
-    mkdir user-config & cd user-config || exit
+    mkdir dotfiles & cd dotfiles || exit
 
     # 会覆盖掉之前的
     cp ~/.zshrc .

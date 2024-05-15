@@ -1,4 +1,12 @@
 @REM ==================================================================
+@REM 速查表: 一些现在没用到但可能会用到的命令
+@REM ==================================================================
+@REM taskkill /F /IM sharemouse.exe
+@REM net stop "ShareMouse Service"
+@REM net start "ShareMouse Service"
+@REM start /b cmd /c "C:\Program Files (x86)\ShareMouse\ShareMouse.exe"
+
+@REM ==================================================================
 @REM Initialization
 @REM ==================================================================
   @echo off
@@ -15,12 +23,7 @@
     if not defined BACKUP_DIR set BACKUP_DIR=%~dp0Programming-Configuration
 
   @REM 有的系统环境变量并没有设置 HOME, 无法直接进入只能手动设置了
-  if not defined HOME set HOME=C:\Users\Administrator
-
-
-
-
-
+  if not defined HOME set HOME=C:\Users\Weidows
 
 
 
@@ -47,9 +50,9 @@
   echo           ``::::::::::::::::
   echo            ::::``:::::::::'        .:::.
   echo           ::::'   ':::::'       .::::::::.(7)
-  echo         .::::'    ::::::     .:::::::'::::. (6)dir
-  echo        .:::'     :::::::  .:::::::::' ':::::. (5)backup
-  echo       .::'       ::::::.:::::::::'      ':::::. (4)new-bing
+  echo         .::::'    ::::::     .:::::::'::::. (6)
+  echo        .:::'     :::::::  .:::::::::' ':::::. (5)
+  echo       .::'       ::::::.:::::::::'      ':::::. (4)backup
   echo      .::'        :::::::::::::::'         ``::::. (3)boot-starter
   echo  ...:::          :::::::::::::'              ``::. (2)test / change color
   echo  ````':.          ':::::::::'                  ::::.. (1)exit
@@ -61,17 +64,12 @@
   if %errorlevel%==1 exit
   if %errorlevel%==2 call :test
   if %errorlevel%==3 cmd /c %~dp0scripts\booter.bat %BACKUP_DIR%
-  if %errorlevel%==4 call :new-bing
-  if %errorlevel%==5 call :backup
-  if %errorlevel%==6 call :dir
+  if %errorlevel%==4 call :backup
 
 
   @REM 暂停-查看程序输出-自循环; 视 goto 优先级过高只在 main 中用,其他的 只用 call
     pause & goto :circle
 goto :eof
-
-
-
 
 
 
@@ -81,11 +79,7 @@ goto :eof
 :test
   echo Testing...
   @REM call nvm list
-
-
 goto :eof
-
-
 
 
 
@@ -96,7 +90,6 @@ goto :eof
 :backup
   @REM mkdir 不会覆盖已存dir; 第一次cd有可能切换盘符,加上/d
   mkdir %BACKUP_DIR% & cd /d %BACKUP_DIR%
-
 
   @REM 备份到 backup/  !!!!!!!!!!!!! 务必把 backup 添加到 .gitignore !!!!!!!!!!!!!
     touch %BACKUP_DIR%\.gitignore
@@ -125,11 +118,11 @@ goto :eof
   @REM 备份lists
     mkdir lists & cd lists
 
-    call xrepo scan > cpp\xrepo-scan.bak
+    @REM call xrepo scan > cpp\xrepo-scan.bak
 
     dir /b "D:\mystream" > dir\dir-software.bak
     dir /b "E:\mystream" > dir\dir-mystream.bak
-    dir /b "G:\mystream" >> dir\dir-mystream.bak
+    dir /b "F:\mystream" >> dir\dir-mystream.bak
 
     call gh repo list > github\repolist-Weidows.bak
     call gh repo list Weidows-projects > github\repolist-Weidows-projects.bak
@@ -145,10 +138,12 @@ goto :eof
     call conda env export -n base > python\conda-env-base.yaml
     @REM call pip freeze > python\pip-list.bak
     call pip list --format=freeze > python\pip-list.bak
+    call pipx list > python\pipx-list.bak
 
-    call scoop export -c > scoop\scoop-export.bak
-    call choco list -l > scoop\choco-list-local.bak
-    call winget export -o scoop\winget-export.bak --include-versions --accept-source-agreements
+    call scoop export -c > pkgs\scoop-export.bak
+    call choco list -l > pkgs\choco-list-local.bak
+    call winget export -o pkgs\winget-export.bak --include-versions --accept-source-agreements
+    call cygwin apt-cyg list > pkgs\cygwin-apt-cyg-list.bak
     @REM call scoop bucket list > scoop\scoop-buckets.bak
     @REM 获取当前文件夹名称
     @REM for /f "delims=" %%i in ("%cd%") do set folder=%%~ni
@@ -174,65 +169,28 @@ goto :eof
     @REM steam 经常遇到游戏本体存在但是不认亲的情况, so backup.
     xcopy %SCOOP%\persist\steam\steamapps\*.acf .\steam\ /y/d
     xcopy E:\mystream\steamapps\*.acf .\steam\ /y/d
-    xcopy G:\mystream\steamapps\*.acf .\steam\ /y/d
+    xcopy F:\mystream\steamapps\*.acf .\steam\ /y/d
 
-    xcopy "C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json" .\WindowsTerminal\ /e/y/d
+    @REM xcopy "C:\Users\Administrator\AppData\Local\Microsoft\Windows Terminal\settings.json" .\WindowsTerminal\ /e/y/d
 
     cd ..
 
 
   @REM 备份 ~\
-    mkdir user-config & cd user-config
+    mkdir dotfiles & cd dotfiles
 
     xcopy %HOME%\pip\ pip\ /e/y/d
     xcopy %HOME%\.continuum\ .continuum\ /e/y/d
     xcopy %HOME%\.npmrc . /y/d
     xcopy %HOME%\.wslconfig . /y/d
-    xcopy %HOME%\.yrmrc . /y/d
+    @REM xcopy %HOME%\.yrmrc . /y/d
     xcopy %HOME%\.condarc . /y/d
     xcopy %HOME%\.gitconfig . /y/d
 
     @REM git-bash 样式
     xcopy %HOME%\.minttyrc . /y/d
-    echo %PATH%> .PATH
+    echo %PATH% | sed 's/;/\n/g' > .PATH
 
     cd ..
 
-goto :eof
-
-
-
-
-
-
-
-
-
-@REM ==================================================================
-@REM NewBiing AI
-@REM ==================================================================
-:new-bing
-  @REM set /p specifiedPath=输入路径 (留空取当前路径):
-  @REM echo.
-  @REM DIR /B %specifiedPath%
-
-  cd /d D:\Repos\tools\BingAI-Client
-  venv\Scripts\python.exe .\BingServer.py
-goto :eof
-
-
-
-
-
-
-@REM ==================================================================
-@REM killer
-@REM ==================================================================
-:killer
-  taskkill /F /IM sharemouse.exe
-  @REM net stop "ShareMouse Service"
-  @REM net start "ShareMouse Service"
-  start /b cmd /c "C:\Program Files (x86)\ShareMouse\ShareMouse.exe"
-
-  taskkill /f /im kassistant.exe
 goto :eof

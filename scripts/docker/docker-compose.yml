@@ -1,12 +1,11 @@
 version: "3.3"
 # volumes:
 #   example-volume:
-      # 需要手动创建, 没有的话报错
+# 需要手动创建, 没有的话报错
 #     external: true
 
 services:
-
-# =================================数据库=================================
+  # =================================数据库=================================
   redis: # 无密码
     image: redis:latest
     restart: unless-stopped
@@ -86,7 +85,7 @@ services:
       #修改默认密码, 用户名必须是 neo4j 不能改
       - NEO4J_AUTH=neo4j/2333
 
-# =================================管理=================================
+  # =================================管理=================================
   qing-long: # 青龙面板 Weidows-2333
     image: whyour/qinglong:latest
     container_name: "qinglong-app"
@@ -121,18 +120,18 @@ services:
   #     - /var/run/docker.sock:/var/run/docker.sock
 
   auto_update:
-   image: containrrr/watchtower:latest-dev
-   volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
-   # Update check interval in seconds.
-   command: --schedule "0 0 * ? * *" --label-enable --cleanup
-   restart: unless-stopped
-  #  depends_on:
-  #    - appsmith
-   environment:
-     - WATCHTOWER_LIFECYCLE_HOOKS=true
+    image: containrrr/watchtower:latest-dev
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # Update check interval in seconds.
+    command: --schedule "0 0 * ? * *" --label-enable --cleanup
+    restart: unless-stopped
+    #  depends_on:
+    #    - appsmith
+    environment:
+      - WATCHTOWER_LIFECYCLE_HOOKS=true
 
-# =================================应用=================================
+  # =================================应用=================================
   # 需要手动转发 80 端口, 本地跑的所以 443 端口无法访问
   # appsmith:
   #   image: index.docker.io/appsmith/appsmith-ce
@@ -170,3 +169,40 @@ services:
   #     - "MASTER_PLIST_URL=https://raw.githubusercontent.com/sickcodes/osx-serial-generator/master/config-custom.plist"
   #   image: "sickcodes/docker-osx:latest"
   #   restart: unless-stopped
+
+  # AutoBangumi:
+  #   image: "ghcr.io/estrellaxd/auto_bangumi:latest"
+  #   container_name: AutoBangumi
+  #   volumes:
+  #     - ./data/AutoBangumi/config:/app/config
+  #     - ./data/AutoBangumi/data:/app/data
+  #   ports:
+  #     - "7892:7892"
+  #   restart: unless-stopped
+  #   dns:
+  #     - 223.5.5.5
+  #   network_mode: bridge
+  #   environment:
+  #     - TZ=Asia/Shanghai
+  #     - PGID=$(id -g)
+  #     - PUID=$(id -u)
+  #     - UMASK=022
+
+  # https://github.com/dockur/windows
+  windows:
+    image: dockurr/windows
+    container_name: windows
+    devices:
+      - /dev/kvm
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006
+      - 3389:3389/tcp
+      - 3389:3389/udp
+    stop_grace_period: 2m
+    restart: on-failure
+    environment:
+      VERSION: "win11"
+      RAM_SIZE: "4G"
+      CPU_CORES: "8"
