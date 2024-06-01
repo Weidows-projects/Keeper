@@ -13,7 +13,7 @@ tasklist | find /i "aria2c.exe" && goto :eof
 
 @REM 配置和启动脚本目录 (空的就行)
 set BACKUP_DIR=%1
-  if not defined BACKUP_DIR set BACKUP_DIR=.
+  if not defined BACKUP_DIR set BACKUP_DIR=backup
 
 @REM 下载目录, 默认为 D:\Download
 set DOWNLOAD_DIR=%2
