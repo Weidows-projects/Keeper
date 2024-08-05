@@ -15,7 +15,6 @@
     "docker-compose-test": "cd ./scripts/docker && docker-compose -f docker-compose-test.yml -p test up",
     "docker-weidows-test": "cd ./scripts/docker && wsl docker build -t weidows-test:v1 .",
     "Windows-service-manager": "cmd /c scripts\\Windows-service-manager.bat",
-    "bw-unlock": "bw unlock",
     "fav-backup": "cd D:/Audio/fav && fav fetch && fav pull"
   }
 }

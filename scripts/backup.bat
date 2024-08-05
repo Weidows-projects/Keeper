@@ -22,9 +22,8 @@ mkdir %BACKUP_DIR% & cd /d %BACKUP_DIR%
   xcopy %HOME%\.ssh\ .ssh\ /e/y/d
   xcopy %HOME%\_netrc . /y/d
 
-  @REM 备份 bw; 文档: https://help.bitwarden.ltd/getting-started/bitwarden-cli
-  set /p BW_SESSION=<bitwarden\session
-  bw list items --session %BW_SESSION% >bitwarden\items.json
+  @REM other scripts with password params
+  cmd /c backup.bat
 
   @REM 备份图床
   @REM ImageHub 备份
@@ -113,6 +112,9 @@ mkdir %BACKUP_DIR% & cd /d %BACKUP_DIR%
 
   cd ..
 
+@REM ssh
+  @REM serv00 保活
+  ssh serv00-Weidows exit
 
 @REM telegram
   mkdir backup\telegram & cd backup\telegram
