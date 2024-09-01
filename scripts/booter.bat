@@ -23,7 +23,6 @@ cd /d %appdata%\Microsoft\Windows\Start Menu\Programs\Scoop Apps
   @REM tasklist | find /i "memreduct.exe" || powershell Start-Process -WindowStyle hidden "memreduct.exe"
   tasklist | find /i "keysound" || powershell Start-Process "KeySound"
   @REM tasklist | find /i "KuGou" || powershell Start-Process -WindowStyle hidden "kugou.exe"
-  tasklist | find /i "keep-runner" || powershell Start-Process -WorkingDirectory %BACKUP_DIR%\others\keep-runner -WindowStyle hidden keep-runner parallel
   tasklist | find /i "WeChat" || powershell Start-Process -WindowStyle hidden "WeChat"
 
   @REM 磁盘唤醒 (deprecated) -> clash 子进程
@@ -34,7 +33,7 @@ cd /d %appdata%\Microsoft\Windows\Start Menu\Programs\Scoop Apps
 
 echo "Next to open other softs, or just close the window."
 @REM https://blog.miniasp.com/post/2009/06/24/Sleep-command-in-Batch
-timeout /t 10
+@REM timeout /t 10
   tasklist | find /i "Dock_64" || start steam://run/1787090
   tasklist | find /i "Banana" || start steam://run/2923300
   tasklist | find /i "ShareX" || start steam://run/400040
@@ -42,13 +41,8 @@ timeout /t 10
   @REM tasklist | find /i "msedge.exe" || start /b microsoft-edge:
   @REM tasklist | find /i "rainmeter.exe" || powershell Start-Process -WindowStyle hidden "rainmeter.exe"
   tasklist | find /i "xyplorer" || powershell Start-Process -WindowStyle hidden "xyplorer.exe"
-  @REM tasklist | find /i "bLend" || powershell Start-Process "盘姬工具箱\bLend"
   @REM tasklist | find /i "n0vadesktop.exe" || powershell Start-Process -WindowStyle hidden "n0vadesktop"
-  @REM tasklist | find /i "Foxmail.exe" || powershell Start-Process -WindowStyle hidden "Foxmail"
-  @REM tasklist | find /i "WXWork.exe" || powershell Start-Process -WindowStyle hidden '企业微信'
-  @REM tasklist | find /i "Lark.exe" || powershell Start-Process -WindowStyle hidden "Lark"
-  @REM tasklist | find /i "qq.exe" || powershell Start-Process -WindowStyle hidden "QQ-NT"
-
+  tasklist | find /i "wutils" || pm2 resurrect
 
 @REM timeout /t 10
 @REM pause

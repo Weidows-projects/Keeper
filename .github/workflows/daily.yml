@@ -171,35 +171,6 @@ jobs:
       #     static_list:
       #     force_update: true
 
-  daily:
-    runs-on: ubuntu-latest
-    steps:
-      - name: dailycheckin
-        run: |
-          if [ 'a${{ secrets.DAILY_CHECKIN_CONFIG }}' != 'a' ]; then
-            pip install dailycheckin
-
-            echo '${{ secrets.DAILY_CHECKIN_CONFIG }}' > config.json
-
-            # 已启用但报错: CSDN IQIYI
-            dailycheckin --include ACFUN CLOUD189 MUSIC163 TIEBA
-
-            # 事了拂衣去
-            rm config.json
-          fi
-
-      - name: AutoMihoyoBBS
-        run: |
-          if [ 'a${{ secrets.AUTOMIHOYOBBS_CONFIG }}' != 'a' ]; then
-            git clone https://gitee.com/kalicyh/AutoMihoyoBBS.git
-            cd AutoMihoyoBBS
-
-            pip install -r ./requirements.txt
-            echo '${{ secrets.AUTOMIHOYOBBS_CONFIG }}' > config/config.yaml
-
-            python main.py >/dev/null
-          fi
-
   # https://github.com/mxschmitt/action-tmate
   ssh-debug:
     runs-on: ubuntu-latest
